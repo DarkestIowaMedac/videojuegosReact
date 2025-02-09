@@ -10,3 +10,9 @@ root.render(
     <App />
   </BrowserRouter>
 );
+
+
+/*
+TAREAS POR HACER:
+Definir tareas por hacer
+*/
