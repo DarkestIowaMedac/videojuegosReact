@@ -6,7 +6,7 @@ import NotFoundPage from '../pages/NotFoundPage';
 
 const AppRoutes = () => {
     return (
-      <Router>
+      
         <Routes>
           <Route path="/" element={<HomePage />} />
 
@@ -15,9 +15,9 @@ const AppRoutes = () => {
           </Route> 
 
           <Route path="*" element={<NotFoundPage />} />
-          
+
         </Routes>
-      </Router>
+      
     );
   };
   
