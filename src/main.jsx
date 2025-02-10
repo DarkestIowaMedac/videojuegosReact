@@ -14,7 +14,7 @@ root.render(
 
 /*
 TAREAS POR HACER:
--Registrarse en la api
+-Comprobar despliegue
 -Mejorar código para obtener juegos random de la api y mejorar carrousel
 -Mejorar página principal
 -Plantilla y mejorar el resto de páginas (incluyendo barra de busqueda) (redefinir tareas)
