@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header'; // Asegúrate de tener el componente Header
 import SearchBar from '../components/SearchBar'; // Asegúrate de tener el componente SearchBar
 import Carousel from '../components/Carousel'; // Asegúrate de tener el componente Carousel
@@ -6,26 +6,28 @@ import GameCard from '../components/GameCard'; // Asegúrate de tener el compone
 import Footer from '../components/Footer'; // Asegúrate de tener el componente Footer
 
 const HomePage = () => {
-  const featuredGames = [
-    {
-      id: 1,
-      title: 'The Legend of Zelda: Breath of the Wild',
-      image: 'https://via.placeholder.com/400x200?text=Zelda',
-      description: 'Un juego de aventura en un mundo abierto lleno de exploración y desafíos.',
-    },
-    {
-      id: 2,
-      title: 'Super Mario Odyssey',
-      image: 'https://via.placeholder.com/400x200?text=Mario',
-      description: 'Acompaña a Mario en su aventura por el mundo.',
-    },
-    {
-      id: 3,
-      title: 'God of War',
-      image: 'https://via.placeholder.com/400x200?text=God+of+War',
-      description: 'Una historia épica de un padre y su hijo en un mundo mitológico.',
-    },
-  ];
+  const [featuredGames, setFeaturedGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const apiKey = 'e145f66352074fd2900cce478881b8a7'; // Tu API Key de RAWG
+
+  const fetchRandomGames = async () => {
+    try {
+      const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&page_size=20&ordering=released`);
+      if (!response.ok) {
+        throw new Error('Error en la solicitud a la API');
+      }
+      const data = await response.json();
+      setFeaturedGames(data.results);
+    } catch (error) {
+      console.error('Error fetching games:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRandomGames();
+  }, []);
 
   const handleSearch = (query) => {
     console.log('Buscar:', query);
@@ -40,7 +42,11 @@ const HomePage = () => {
 
         <section className="my-8">
           <h2 className="text-2xl font-bold text-center mb-4">Juegos Destacados</h2>
-          <Carousel />
+          {loading ? (
+            <p>Cargando juegos...</p>
+          ) : (
+            <Carousel games={featuredGames} />
+          )}
         </section>
 
         <section className="my-8">
@@ -49,10 +55,10 @@ const HomePage = () => {
             {featuredGames.map((game) => (
               <GameCard 
                 key={game.id} 
-                title={game.title} 
-                image={game.image} 
-                description={game.description} 
-                onDetailsClick={() => console.log(`Ver detalles de ${game.title}`)} 
+                title={game.name} 
+                image={game.background_image} 
+                description={game.description || 'Descripción no disponible'} 
+                onDetailsClick={() => console.log(`Ver detalles de ${game.name}`)} 
               />
             ))}
           </div>
@@ -62,5 +68,5 @@ const HomePage = () => {
     </div>
   );
 };
-//Apikey: e145f66352074fd2900cce478881b8a7 Mirar apikey.jpg
+
 export default HomePage;
