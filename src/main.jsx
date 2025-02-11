@@ -15,6 +15,7 @@ root.render(
 /*
 TAREAS POR HACER:
 
+-Separación de las llamadas a la API en otra página??
 -Hacer cambio de página en lista de juegos
 -Hacer página de detalle de videojuego
 -Plantear funcionalidad barra de busqueda
