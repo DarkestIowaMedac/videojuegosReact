@@ -8,7 +8,7 @@ const Carousel = ({ games }) => {
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
-    handleResize() // Set initial width
+    handleResize() // establecer ancho inicial
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
@@ -49,7 +49,6 @@ const Carousel = ({ games }) => {
               <div key={index} className="min-w-full bg-opacity-0 p-0">
                 <div className="relative rounded-lg shadow-xl" style={{ paddingTop: "56.25%" }}>
                   {" "}
-                  {/* 16:9 Aspect Ratio */}
                   <img
                     src={game.background_image || "/placeholder.svg"}
                     alt={game.name}

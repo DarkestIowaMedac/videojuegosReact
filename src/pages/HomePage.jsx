@@ -48,17 +48,11 @@ const HomePage = () => {
     fetchBetterGames()
   }, []) 
 
-  const handleSearch = (query) => {
-    console.log('Buscar:', query);
-    // TODO Logica de busqueda
-  };
 
   return (
     <div>
       <Header />
       <main className="p-4">
-        <SearchBar onSearch={handleSearch} />
-
         <section className="my-8">
           <h2 className="text-2xl font-bold text-center mb-4">Juegos Destacados</h2>
           {loadingb ? (

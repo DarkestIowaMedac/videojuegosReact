@@ -14,10 +14,10 @@ root.render(
 
 /*
 TAREAS POR HACER:
--Comprobar despliegue
--Mejorar código para obtener juegos random de la api y mejorar carrousel
--Mejorar página principal
--Plantilla y mejorar el resto de páginas (incluyendo barra de busqueda) (redefinir tareas)
--Enlazar páginas
--Dar funcionalidad deseada a buscador de tareas
+
+-Hacer cambio de página en lista de juegos
+-Hacer página de detalle de videojuego
+-Plantear funcionalidad barra de busqueda
+-Rematar el enlazado de páginas
+-Mejorar estilos en la página de lista de juegos (opcional)
 */
