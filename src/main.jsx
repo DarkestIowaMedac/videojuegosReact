@@ -15,10 +15,10 @@ root.render(
 /*
 TAREAS POR HACER:
 
--Separación de las llamadas a la API en otra página??
--Hacer cambio de página en lista de juegos
--Hacer página de detalle de videojuego
 -Plantear funcionalidad barra de busqueda
--Rematar el enlazado de páginas
+-Incorporar Logo
+-Separación de las llamadas a la API en api.js
+-Hacer cambio de página en juegos recientes
 -Mejorar estilos en la página de lista de juegos (opcional)
+-Hacer filtros
 */

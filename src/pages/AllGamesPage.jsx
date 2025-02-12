@@ -5,6 +5,7 @@ import Header from "../components/Header"
 import GameCard from "../components/GameCard"
 import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
+import { fetchAllGames } from "../services/api.js"
 
 const AllGamesPage = () => {
   const [allGames, setAllGames] = useState([])
@@ -19,32 +20,23 @@ const AllGamesPage = () => {
     year: "",
   })
 
-  const apiKey = "e145f66352074fd2900cce478881b8a7"
-
-  const fetchAllGames = async (page = 1) => {
+  const loadAllGames = async () => {
     setLoading(true)
     try {
-      const response = await fetch(
-        `https://api.rawg.io/api/games?key=${apiKey}&page=${page}&page_size=40&ordering=name&search_precise=true&search=a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z,Á,É,Í,Ó,Ú,á,é,í,ó,ú,0,1,2,3,4,5,6,7,8,9,?,¿,¡,!,+,',],[,@,#,~,€,¬,.,-,_,(,),/,|,*,"`,
-      )
-      if (!response.ok) {
-        throw new Error("Error en la solicitud a la API")
-      }
-      const data = await response.json()
+      const data = await fetchAllGames(currentPage)
       setAllGames(data.results)
       setFilteredGames(data.results)
       setTotalPages(Math.ceil(data.count / 40))
-      setCurrentPage(page)
     } catch (error) {
-      console.error("Error fetching games:", error)
+      console.error("Error loading games:", error)
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchAllGames()
-  }, []) 
+    loadAllGames(currentPage) 
+  }, [currentPage]) 
 
   useEffect(() => {
     const filtered = allGames.filter(
@@ -57,6 +49,7 @@ const AllGamesPage = () => {
     setFilteredGames(filtered)
   }, [filters, allGames])
 
+
   const handleSearchChange = (query) => {
     setFilters((prev) => ({ ...prev, search: query }))
   }
@@ -68,13 +61,15 @@ const AllGamesPage = () => {
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      fetchAllGames(currentPage - 1)
+      setCurrentPage(currentPage - 1)
+      console.log(currentPage)
     }
   }
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      fetchAllGames(currentPage + 1)
+      setCurrentPage(currentPage + 1)
+      console.log(currentPage)
     }
   }
 
@@ -120,7 +115,7 @@ const AllGamesPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredGames.map((game) => (
                 <GameCard 
-                //key={game.id}
+                key={game.id}
                 id={game.id}
                 title={game.name} 
                 image={game.background_image} 

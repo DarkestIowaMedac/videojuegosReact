@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar';
 import Carousel from '../components/Carousel'; 
 import GameCard from '../components/GameCard'; 
 import Footer from '../components/Footer'; 
+import { fetchRecentGames, fetchBetterGames } from '../services/api'; 
 
 const HomePage = () => {
   const [betterGames, setBetterGames] = useState([]);
@@ -13,42 +14,29 @@ const HomePage = () => {
 
   const apiKey = 'e145f66352074fd2900cce478881b8a7'; 
 
-  const fetchRecentGames = async () => {
-    try {
-      const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&page_size=20&ordering=released`);
-      if (!response.ok) {
-        throw new Error('Error en la solicitud a la API');
-      }
-      const data = await response.json();
-      //console.log("API response:", data.results[0]);
-      setFeaturedGames(data.results);
-    } catch (error) {
-      console.error('Error fetching games:', error);
-    } finally {
-      setLoadingf(false);
-    }
-  };
-
-  const fetchBetterGames = async () => {
-    try {
-      const response = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&page_size=5&ordering=-rating`);
-      if (!response.ok) {
-        throw new Error('Error en la solicitud a la API');
-      }
-      const data = await response.json();
-      setBetterGames(data.results);
-    } catch (error) {
-      console.error('Error fetching games:', error);
-    } finally {
-      setLoadingb(false);
-    }
-  };
-
   useEffect(() => {
-    fetchRecentGames()
-    fetchBetterGames()
-  }, []) 
+    const loadGames = async () => {
+      try {
+        const recentGames = await fetchRecentGames()
+        setFeaturedGames(recentGames)
+      } catch (error) {
+        console.error("Error fetching recent games:", error)
+      } finally {
+        setLoadingf(false)
+      }
 
+      try {
+        const topGames = await fetchBetterGames()
+        setBetterGames(topGames)
+      } catch (error) {
+        console.error("Error fetching top games:", error)
+      } finally {
+        setLoadingb(false)
+      }
+    }
+
+    loadGames()
+  }, [])
 
   return (
     <div>
