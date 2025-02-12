@@ -10,9 +10,9 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
 
-          <Route path="/games" element={<AllGamesPage />}>
-            <Route path=":id" element={<GameDetailPage />} />
-          </Route> 
+          <Route path="/games" element={<AllGamesPage />}/>
+
+          <Route path="/game/:id" element={<GameDetailPage />} />
 
           <Route path="*" element={<NotFoundPage />} />
 

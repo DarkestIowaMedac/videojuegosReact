@@ -20,6 +20,7 @@ const HomePage = () => {
         throw new Error('Error en la solicitud a la API');
       }
       const data = await response.json();
+      //console.log("API response:", data.results[0]);
       setFeaturedGames(data.results);
     } catch (error) {
       console.error('Error fetching games:', error);
@@ -69,13 +70,13 @@ const HomePage = () => {
                 <p>Cargando juegos...</p>
                 ) : (
                 featuredGames.map((game) => (
-                    <GameCard 
-                        key={game.id} 
-                        title={game.name} 
-                        image={game.background_image} 
-                        description={game.description_raw} 
-                        onDetailsClick={() => console.log(`Ver detalles de ${game.name}`)} 
-                    />
+                  <GameCard 
+                    //key={game.id}
+                    id={game.id}
+                    title={game.name} 
+                    image={game.background_image} 
+                    description={game.description || game.description_raw || 'No description available'} 
+                  />
                 ))
             )}
           </div>

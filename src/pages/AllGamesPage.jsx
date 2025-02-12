@@ -119,13 +119,13 @@ const AllGamesPage = () => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredGames.map((game) => (
-                <GameCard
-                  key={game.id}
-                  title={game.name}
-                  image={game.background_image}
-                  description={game.description_raw}
-                  onDetailsClick={() => console.log(`Ver detalles de ${game.name}`)}
-                />
+                <GameCard 
+                //key={game.id}
+                id={game.id}
+                title={game.name} 
+                image={game.background_image} 
+                description={game.description || game.description_raw || 'No description available'} 
+              />
               ))}
             </div>
             <div className="mt-6 flex justify-center items-center gap-4">
