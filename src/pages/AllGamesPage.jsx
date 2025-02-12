@@ -6,8 +6,10 @@ import GameCard from "../components/GameCard"
 import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
 import { fetchAllGames } from "../services/api.js"
+import { useParams } from 'react-router-dom';
 
 const AllGamesPage = () => {
+  const { query } = useParams();
   const [allGames, setAllGames] = useState([])
   const [filteredGames, setFilteredGames] = useState([])
   const [loading, setLoading] = useState(true)
@@ -19,11 +21,11 @@ const AllGamesPage = () => {
     rating: 0,
     year: "",
   })
-
+  
   const loadAllGames = async () => {
     setLoading(true)
     try {
-      const data = await fetchAllGames(currentPage)
+      const data = await fetchAllGames(currentPage,query)
       setAllGames(data.results)
       setFilteredGames(data.results)
       setTotalPages(Math.ceil(data.count / 40))

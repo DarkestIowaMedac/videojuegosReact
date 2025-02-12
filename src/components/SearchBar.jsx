@@ -1,33 +1,33 @@
 import React, { useState } from 'react';
-import { fetchSpecificGame} from '../services/api';
+//import { fetchSpecificGame} from '../services/api';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = () => {
   const [query, setQuery] = useState('');
-  const [specificGames, setSpecificGames] = useState([]);
-  const [loadings, setLoadings] = useState(true);
+  //const [specificGames, setSpecificGames] = useState([]);
+  //const [loadings, setLoadings] = useState(true);
 
   const navigate = useNavigate()
 
   const handleSearch = (e) => {
-    navigate(`/games/${specificGames}`)
+    navigate(`/games/${query}`)
   };
 
-  useEffect(() => {
-    const loadGames = async () => {
-  try {
-          const searchedGames = await fetchSpecificGame()
-          setSpecificGames(searchedGames)
-        } catch (error) {
-          console.error("Error fetching recent games:", error)
-        } finally {
-          setLoadings(false)
-        }   
-      }
+  // useEffect(() => {
+  //   const loadGames = async () => {
+  // try {
+  //         const searchedGames = await fetchSpecificGame()
+  //         setSpecificGames(searchedGames)
+  //       } catch (error) {
+  //         console.error("Error fetching recent games:", error)
+  //       } finally {
+  //         setLoadings(false)
+  //       }   
+  //     }
 
-      loadGames()
-    }, []) 
+  //     loadGames()
+  //   }, []) 
   return (
     <form onSubmit={handleSearch} className="flex items-center max-w-md mx-auto">
       <input

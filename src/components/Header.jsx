@@ -9,10 +9,10 @@ import SearchBar from "./SearchBar"
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false)
 
-  const handleSearch = () => {
-    //console.log('Buscar:', query);
-    //
-  };
+  // const handleSearch = () => {
+  //   //console.log('Buscar:', query);
+  //   //
+  // };
   
   
   return (
@@ -22,7 +22,7 @@ const Header = () => {
           Logo
         </a>
         <div className="flex items-center space-x-12">
-          <SearchBar onSearch={handleSearch} className="h-10" />
+          <SearchBar className="h-10" />
           <nav className="hidden sm:flex space-x-4 items-center">
             <a href="/games" className="text-white hover:text-gray-300">
               Juegos
