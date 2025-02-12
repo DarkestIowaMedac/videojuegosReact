@@ -12,8 +12,6 @@ const HomePage = () => {
   const [loadingb, setLoadingb] = useState(true);
   const [loadingf, setLoadingf] = useState(true);
 
-  const apiKey = 'e145f66352074fd2900cce478881b8a7'; 
-
   useEffect(() => {
     const loadGames = async () => {
       try {

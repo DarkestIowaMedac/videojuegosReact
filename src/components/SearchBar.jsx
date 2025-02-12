@@ -1,13 +1,33 @@
 import React, { useState } from 'react';
+import { fetchSpecificGame} from '../services/api';
+import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
+  const [specificGames, setSpecificGames] = useState([]);
+  const [loadings, setLoadings] = useState(true);
+
+  const navigate = useNavigate()
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    onSearch(query);
+    navigate(`/games/${specificGames}`)
   };
 
+  useEffect(() => {
+    const loadGames = async () => {
+  try {
+          const searchedGames = await fetchSpecificGame()
+          setSpecificGames(searchedGames)
+        } catch (error) {
+          console.error("Error fetching recent games:", error)
+        } finally {
+          setLoadings(false)
+        }   
+      }
+
+      loadGames()
+    }, []) 
   return (
     <form onSubmit={handleSearch} className="flex items-center max-w-md mx-auto">
       <input

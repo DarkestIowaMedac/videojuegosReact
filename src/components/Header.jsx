@@ -8,11 +8,12 @@ import SearchBar from "./SearchBar"
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false)
-  
-  const handleSearch = (query) => {
-    console.log('Buscar:', query);
-    // TODO Logica de busqueda
+
+  const handleSearch = () => {
+    //console.log('Buscar:', query);
+    //
   };
+  
   
   return (
     <header className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 shadow-md">

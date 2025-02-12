@@ -44,3 +44,19 @@ export const fetchAllGames = async (page = 1) => {
       throw error
     }
   }
+
+export const fetchSpecificGame = async (search = '') => {
+try {
+    const response = await fetch(
+    `https://api.rawg.io/api/games?key=${API_KEY}&page=1&page_size=40&ordering=name&search_precise=true&search=${search}`,
+    )
+    if (!response.ok) {
+    throw new Error("Error en la solicitud a la API")
+    }
+    const data = await response.json()
+    return data
+} catch (error) {
+    console.error("Error fetching all games:", error)
+    throw error
+}
+}
