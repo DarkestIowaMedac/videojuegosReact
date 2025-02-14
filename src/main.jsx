@@ -33,4 +33,8 @@ publisher y sus videojuegos
 ● Añade paginación a la página de lista de videojuegos. (HECHO)
 ● Crea una nueva página similar a la principal de videojuegos, pero donde se
 buscarán Publishers
+
+
+  Errores corrección:
+  El texto del buscador, dropdowns es blanco, no se puede leer... (modo oscuro)
 */

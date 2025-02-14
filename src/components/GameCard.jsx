@@ -17,7 +17,7 @@ const GameCard = ({ id, title, image, description }) => {
       <img className="w-full h-48 object-cover" src={image || "/placeholder.svg"} alt={title} />
       <div className="p-4">
         <h2 className="font-bold text-xl mb-2">{title}</h2>
-        <p className="text-gray-700 text-base mb-4 line-clamp-3">{description}</p>
+        {/* <p className="text-gray-700 text-base mb-4 line-clamp-3">{description}</p> */}
         <button
           onClick={handleDetailsClick}
           className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300"

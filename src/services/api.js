@@ -35,7 +35,7 @@ export const fetchAllGames = async (page = 1, query = '') => {
       if(query === ''){
         console.log("holitas")
       response = await fetch(
-        `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&page_size=40&ordering=name&search_precise=true&search=a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z,Á,É,Í,Ó,Ú,á,é,í,ó,ú,0,1,2,3,4,5,6,7,8,9,?,¿,¡,!,+,',],[,@,#,~,€,¬,.,-,_,(,),/,|,*,"`,
+        `${BASE_URL}/games?key=${API_KEY}&page=${page}&page_size=40&ordering=name&search_precise=true&search=a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z,Á,É,Í,Ó,Ú,á,é,í,ó,ú,0,1,2,3,4,5,6,7,8,9,?,¿,¡,!,+,',],[,@,#,~,€,¬,.,-,_,(,),/,|,*,"`,
       )
       if (!response.ok) {
         throw new Error("Error en la solicitud a la API")
@@ -43,7 +43,7 @@ export const fetchAllGames = async (page = 1, query = '') => {
     } else {
         console.log("holitas22")
         response = await fetch(
-            `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&page_size=40&ordering=name&search_precise=true&search=${query}`,
+            `${BASE_URL}/games?key=${API_KEY}&page=${page}&page_size=40&ordering=name&search_precise=true&search=${query}`,
         )
         if (!response.ok) {
             throw new Error("Error en la solicitud a la API")
@@ -56,6 +56,21 @@ export const fetchAllGames = async (page = 1, query = '') => {
       throw error
     }
   }
+
+export const fetchGameDetails = async (id) => {
+  
+  try {
+    const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`)
+    if (!response.ok) {
+      throw new Error("Error en la solicitud a la API")
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error fetching game details:", error)
+    throw error
+  }
+}
 
 // export const fetchSpecificGame = async (search = '') => {
 // try {

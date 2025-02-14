@@ -57,11 +57,11 @@ const HomePage = () => {
                 ) : (
                 featuredGames.map((game) => (
                   <GameCard 
-                    //key={game.id}
+                    key={game.id}
                     id={game.id}
                     title={game.name} 
                     image={game.background_image} 
-                    description={game.description || game.description_raw || 'No description available'} 
+                    description={game.description} 
                   />
                 ))
             )}
