@@ -10,6 +10,7 @@ const GameDetailPage = () => {
   const [game, setGame] = useState(null)
   const [loadingd, setLoadingd] = useState(true)
   console.log(id)
+  localStorage.clear()
   useEffect(() => {
   const loadspecificGame = async () => {
       setLoadingd(true)
@@ -65,7 +66,7 @@ const GameDetailPage = () => {
                   {game.released}
                 </div>
                 <div className="bg-green-100 text-green-800 rounded-full px-3 py-1 text-sm font-semibold">
-                  Rating: {game.rating}
+                  Metacritic Score: {game.metacritic}
                 </div>
               </div>
               <p className="text-gray-700 text-lg mb-6">{game.description_raw}</p>

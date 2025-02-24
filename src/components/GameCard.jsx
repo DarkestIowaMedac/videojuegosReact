@@ -13,14 +13,19 @@ const GameCard = ({ id, title, image, description }) => {
   }
 
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105">
-      <img className="w-full h-48 object-cover" src={image || "/placeholder.svg"} alt={title} />
-      <div className="p-4">
-        <h2 className="font-bold text-xl mb-2">{title}</h2>
-        {/* <p className="text-gray-700 text-base mb-4 line-clamp-3">{description}</p> */}
+    <div className="w-full h-[350px] rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105">
+      <div className="h-48"> {/* Contenedor fijo para la imagen */}
+        <img 
+          className="w-full h-full object-cover" 
+          src={image || "/placeholder.svg"} 
+          alt={title} 
+        />
+      </div>
+      <div className="p-4 h-[134px] flex flex-col justify-between"> {/* Altura fija para el contenido */}
+        <h2 className="font-bold text-xl line-clamp-2 mb-2">{title}</h2>
         <button
           onClick={handleDetailsClick}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mt-auto"
         >
           Ver Detalles
         </button>

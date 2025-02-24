@@ -4,11 +4,15 @@ import { useState } from "react"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { GrClose } from "react-icons/gr"
 import SearchBar from "./SearchBar"
-
+import { useNavigate } from "react-router-dom"
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false)
-
+  const navigate = useNavigate();
+  const handleGamesClick = () => {
+    localStorage.clear(); // O localStorage.removeItem('filters') si solo quieres eliminar un item específico
+    navigate("/games"); // Redirige a la página de juegos
+  };
   // const handleSearch = () => {
   //   //console.log('Buscar:', query);
   //   //
@@ -24,7 +28,7 @@ const Header = () => {
         <div className="flex items-center space-x-12">
           <SearchBar className="h-10" />
           <nav className="hidden sm:flex space-x-4 items-center">
-            <a href="/games" className="text-white hover:text-gray-300">
+            <a href="" onClick={handleGamesClick} className="text-white hover:text-gray-300">
               Juegos
             </a>
             <a href="#" className="text-white hover:text-gray-300">

@@ -11,7 +11,7 @@ const HomePage = () => {
   const [featuredGames, setFeaturedGames] = useState([]);
   const [loadingb, setLoadingb] = useState(true);
   const [loadingf, setLoadingf] = useState(true);
-
+  localStorage.clear()
   useEffect(() => {
     const loadGames = async () => {
       try {
@@ -51,20 +51,22 @@ const HomePage = () => {
 
         <section className="my-8">
           <h2 className="text-2xl font-bold text-center mb-4">Juegos Recientes</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {loadingf ? (
-                <p>Cargando juegos...</p>
-                ) : (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {loadingf ? (
+                <p className="text-center col-span-full">Cargando juegos...</p>
+              ) : (
                 featuredGames.map((game) => (
-                  <GameCard 
+                  <GameCard
                     key={game.id}
                     id={game.id}
-                    title={game.name} 
-                    image={game.background_image} 
-                    description={game.description} 
+                    title={game.name}
+                    image={game.background_image}
+                    description={game.description}
                   />
                 ))
-            )}
+              )}
+            </div>
           </div>
         </section>
       </main>

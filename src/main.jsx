@@ -14,27 +14,17 @@ root.render(
 
 /*
 TAREAS POR HACER:
-
-
--Incorporar Logo
+-Incorporar Logo (Opcional)
 -Hacer paginación en juegos recientes (Opcional)
--Mejorar estilos en la página de detalle de juego (Opcional)
--Mejorar estilos en la página de lista de juegos (Opcional)
--Hacer filtros
--Hacer favoritos
-En la página de detalles de un videojuego deben mostrarse como mínimo:
-○ Tags
-○ Publisher
-○ Plataformas
-● Cada tag/género debe ser clickable y debe llevar a una nueva página que muestre
-los juegos de un tag/género
-● Cada publisher será un enlace que llevará una página con información sobre el
-publisher y sus videojuegos
-● Añade paginación a la página de lista de videojuegos. (HECHO)
-● Crea una nueva página similar a la principal de videojuegos, pero donde se
-buscarán Publishers
+-Hacer paginación a los publishers (Opcional)
 
+-Hacer que cada tag/género sea clickable y lleve a allgamesDetail con el filtro en ceustión aplicado
+-Hacer AllPublisherPage con su respectivo enlace
+-Hacer PublisherDetailPage. Además los publishers en los juegos deben llevar ahí y debe haber en el nav un enlace
 
-  Errores corrección:
-  El texto del buscador, dropdowns es blanco, no se puede leer... (modo oscuro)
+Aspectos a mejorar.
+-metacriticScore podría ser un componente con 2 puntos de arrastre para elegir minimos y maximos
+-mejorar a estilos más llamativos
+-permitir registro de usuarios y que almacenen sus juegos deseados, adquiridos, etc.
+
 */

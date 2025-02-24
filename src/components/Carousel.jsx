@@ -14,7 +14,7 @@ const Carousel = ({ games }) => {
   }, [])
 
   // Filtrar juegos con puntuación >= 4.5
-  const filteredGames = games.filter((game) => game.rating >= 4.5)
+  const filteredGames = games.filter((game) => game.metacritic >= 95)
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % filteredGames.length)
@@ -59,7 +59,7 @@ const Carousel = ({ games }) => {
                       {game.name}
                     </h3>
                     <p className="text-yellow-400 font-semibold" style={{ fontSize: `${getFontSize(0.875)}rem` }}>
-                      Rating: {game.rating.toFixed(1)}
+                      Metacritic Score: {game.metacritic.toFixed(0)}
                     </p>
                   </div>
                 </div>
