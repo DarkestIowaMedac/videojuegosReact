@@ -18,14 +18,11 @@ TAREAS POR HACER:
 OPCIONAL
 -Incorporar Logo (Opcional)
 -Hacer paginación en juegos recientes (Opcional)
--Hacer paginación a los publishers (Opcional)
-
-
 
 ASPECTOS A MEJORAR EN FUTURO
 -metacriticScore podría ser un componente con 2 puntos de arrastre para elegir minimos y maximos
 -mejorar a estilos más llamativos
 -permitir registro de usuarios y que almacenen sus juegos deseados, adquiridos, etc.
 -Filtrado de publishers
-
+-La lupa debe plantear un sistema que busque también los publishers
 */
