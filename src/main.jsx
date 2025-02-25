@@ -24,4 +24,6 @@ ASPECTOS A MEJORAR EN FUTURO
 -permitir registro de usuarios y que almacenen sus juegos deseados, adquiridos, etc.
 -Filtrado de publishers
 -La lupa debe plantear un sistema que busque también los publishers
+-Más filtros y añadir plataformas y demás elementos a tener en cuenta de la API así como sus filtros y tener en cuenta sus modos osc
+
 */

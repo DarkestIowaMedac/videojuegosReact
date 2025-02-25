@@ -100,7 +100,7 @@ const AllGamesPage = () => {
     <div>
       <Header />
       <main className="p-4">
-        <h1 className="mt-8 text-3xl font-bold text-center mb-6">Todos los Juegos</h1>
+        <h2 className="mt-8 text-3xl font-bold text-center mb-6">Todos los Juegos</h2>
 
         <div className="mb-6 flex flex-wrap gap-4 justify-center">
           <select name="genre" value={filters.genre} onChange={handleFilterChange} className="p-2 border rounded">

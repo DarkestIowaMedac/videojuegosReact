@@ -9,7 +9,7 @@ const PublisherCard = ({ id, name, image, gamesCount, description }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
         <div className="p-4">
-          <h2 className="text-xl font-bold mb-2">{name}</h2>
+          <h3 className="text-xl font-bold mb-2">{name}</h3>
           <p className="text-gray-600 mb-2">Juegos publicados: {gamesCount}</p>
           {description && <p className="text-sm text-gray-500 line-clamp-2">{description}</p>}
         </div>

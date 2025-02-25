@@ -46,7 +46,7 @@ const AllPublishersPage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow p-4">
-        <h1 className="mt-8 text-3xl font-bold text-center mb-6">Distribuidoras de Videojuegos</h1>
+        <h2 className="mt-8 text-3xl font-bold text-center mb-6">Distribuidoras de Videojuegos</h2>
 
         {loading ? (
           <div className="flex justify-center items-center min-h-[400px]">

@@ -22,10 +22,10 @@ const GameCard = ({ id, title, image, description }) => {
         />
       </div>
       <div className="p-4 h-[134px] flex flex-col justify-between"> {/* Altura fija para el contenido */}
-        <h2 className="font-bold text-xl line-clamp-2 mb-2">{title}</h2>
+        <h3 className="font-bold text-xl line-clamp-2 mb-2">{title}</h3>
         <button
           onClick={handleDetailsClick}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mt-auto"
+          className="bg-blue-500 text-white font-bold py-1 px-4 rounded hover:bg-blue-700 transition duration-300 mt-auto"
         >
           Ver Detalles
         </button>

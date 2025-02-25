@@ -48,7 +48,7 @@ const GameDetailPage = () => {
   if (!game) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold mb-4">Juego no encontrado</h1>
+        <h2 className="text-3xl font-bold mb-4">Juego no encontrado</h2>
         <Link to="/" className="text-blue-500 hover:underline">
           Volver a la página principal
         </Link>

@@ -43,7 +43,7 @@ const HomePage = () => {
         <section className="my-8">
           <h2 className="text-2xl font-bold text-center mb-4">Juegos Destacados</h2>
           {loadingb ? (
-            <p>Cargando juegos...</p>
+            <h2>Cargando juegos...</h2>
           ) : (
             <Carousel games={betterGames} />
           )}
@@ -54,7 +54,7 @@ const HomePage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {loadingf ? (
-                <p className="text-center col-span-full">Cargando juegos...</p>
+                <h2 className="text-center col-span-full">Cargando juegos...</h2>
               ) : (
                 featuredGames.map((game) => (
                   <GameCard

@@ -73,8 +73,12 @@ button:focus-visible {
 
 @media (prefers-color-scheme: dark) {
 
+  h2, span{
+    color: white;
+  }
+  
   body {
     color: black; /* Color de texto en modo oscuro */
   }
-
+  
 }
