@@ -3,6 +3,8 @@ import HomePage from '../pages/HomePage';
 import AllGamesPage from '../pages/AllGamesPage';
 import GameDetailPage from '../pages/GameDetailPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import AllPublishersPage from '../pages/AllPublishersPage';
+import PublisherDetailPage from '../pages/PublisherDetailPage';
 
 const AppRoutes = () => {
     return (
@@ -14,6 +16,10 @@ const AppRoutes = () => {
           <Route path="/games" element={<AllGamesPage />}/>
 
           <Route path="/game/:id" element={<GameDetailPage />} />
+
+          <Route path="/publishers/:id" element={<PublisherDetailPage />} />
+
+          <Route path="/publishers" element={<AllPublishersPage />} />
 
           <Route path="/" element={<HomePage />} />
 

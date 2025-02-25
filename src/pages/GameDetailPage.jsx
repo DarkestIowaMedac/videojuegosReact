@@ -26,6 +26,17 @@ const GameDetailPage = () => {
   loadspecificGame()
   }, [])
 
+ 
+  const handleGenreClick = (genreName) => {
+    const filters = {
+      search: "",
+      genre: genreName,
+      rating: 0,
+      year: "",
+    }
+    localStorage.setItem("filters", JSON.stringify(filters))
+  }
+  
   if (loadingd) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -80,7 +91,14 @@ const GameDetailPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold mb-2">Géneros</h2>
                   <ul className="list-disc list-inside">
-                    {game.genres && game.genres.map((g) => <li key={g.name}>{g.name}</li>)}
+                    {game.genres &&
+                      game.genres.map((g) => (
+                        <li key={g.name} className="hover:text-blue-600">
+                          <Link to="/games" onClick={() => handleGenreClick(g.name)} className="hover:underline">
+                            {g.name}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </div>
                 <div>
@@ -92,7 +110,12 @@ const GameDetailPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold mb-2">Publicadores</h2>
                   <ul className="list-disc list-inside">
-                    {game.publishers && game.publishers.map((p) => <li key={p.name}>{p.name}</li>)}
+                    {game.publishers && game.publishers.map((p) => 
+                    <li key={p.name} className="hover:text-blue-600">
+                    <Link to={`/publishers/${p.id}`} className="hover:underline">
+                      {p.name}
+                    </Link>
+                    </li>)}
                   </ul>
                 </div>
               </div>

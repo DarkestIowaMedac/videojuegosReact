@@ -71,7 +71,9 @@ const AllGamesPage = () => {
     const { name, value } = e.target;
     setFilters((prev) => {
       const newFilters = { ...prev, [name]: value }; 
-      localStorage.setItem('filters', JSON.stringify(newFilters)); 
+      localStorage.setItem('filters', JSON.stringify(newFilters));
+      console.log("losfiltros") 
+      console.log(newFilters)
       console.log(filters)
       return newFilters; 
     });

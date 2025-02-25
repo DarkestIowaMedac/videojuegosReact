@@ -1,6 +1,39 @@
 const API_KEY = "e145f66352074fd2900cce478881b8a7"
 const BASE_URL = "https://api.rawg.io/api"
 
+
+export const fetchPublishers = async (page = 1) => {
+    const response = await fetch(`${BASE_URL}/publishers?key=${API_KEY}&page=${page}&page_size=40`)
+    if (!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+    const data = await response.json()
+    return data
+}
+
+export const fetchPublisherDetails = async (id) => {
+  const response = await fetch(
+    `${BASE_URL}/publishers/${id}?key=${API_KEY}`
+  )
+  if (!response.ok) {
+    throw new Error('Failed to fetch publisher details')
+  }
+  const data = await response.json()
+  return data
+}
+
+export const fetchPublisherGames = async (id) => {
+  
+    const response = await fetch(
+      `${BASE_URL}/games?key=${API_KEY}&publishers=${id}&ordering=-metacritic&page_size=20`
+    )
+    if (!response.ok) {
+      throw new Error('Failed to fetch publisher games')
+    }
+    const data = await response.json()
+    return data.results
+}
+
 export const fetchRecentGames = async () => {
   try {
     const response = await fetch(`${BASE_URL}/games?key=${API_KEY}&page_size=20&ordering=released`)
