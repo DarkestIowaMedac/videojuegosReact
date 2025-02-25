@@ -27,7 +27,7 @@ const Header = () => {
     <header className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <a href="/" className="text-white text-2xl font-bold">
-          Logo
+          <img src="../../images/logo.png" className="w-14"></img>
         </a>
         <div className="flex items-center space-x-12">
           <SearchBar className="h-10" />
