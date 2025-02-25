@@ -55,7 +55,6 @@ const PublisherDetailPage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
-        {/* Publisher Info Card */}
         <div className="bg-white shadow-xl rounded-lg overflow-hidden max-w-3xl mx-auto mb-12">
           <div className="relative h-96">
             <img
@@ -95,7 +94,6 @@ const PublisherDetailPage = () => {
           </div>
         </div>
 
-        {/* Games Section */}
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl font-bold mb-6">Juegos Destacados</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

@@ -10,11 +10,11 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate();
   const handleGamesClick = () => {
-    localStorage.clear(); // O localStorage.removeItem('filters') si solo quieres eliminar un item específico
+    localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
     navigate("/games"); // Redirige a la página de juegos
   };
   const handlePublishersClick = () => {
-    localStorage.clear(); // O localStorage.removeItem('filters') si solo quieres eliminar un item específico
+    localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
     navigate("/publishers"); // Redirige a la página de juegos
   };
   // const handleSearch = () => {
