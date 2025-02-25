@@ -17,9 +17,11 @@ const AppRoutes = () => {
 
           <Route path="/game/:id" element={<GameDetailPage />} />
 
-          <Route path="/publishers/:id" element={<PublisherDetailPage />} />
+          <Route path="/publishers/:query" element={<AllPublishersPage />}/>
 
           <Route path="/publishers" element={<AllPublishersPage />} />
+
+          <Route path="/publisher/:id" element={<PublisherDetailPage />} />
 
           <Route path="/" element={<HomePage />} />
 

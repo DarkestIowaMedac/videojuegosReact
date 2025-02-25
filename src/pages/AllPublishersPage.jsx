@@ -6,17 +6,19 @@ import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
 import PublisherCard from "../components/PublisherCard"
 import { fetchPublishers } from "../services/api"
+import { useParams } from 'react-router-dom';
 
 const AllPublishersPage = () => {
+  const { query } = useParams();
   const [publishers, setPublishers] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-
+  localStorage.setItem('search', 'publishers');
   const loadPublishers = async () => {
     setLoading(true)
     try {
-      const data = await fetchPublishers(currentPage)
+      const data = await fetchPublishers(currentPage,query)
       setPublishers(data.results)
       setTotalPages(Math.ceil(data.count / 40))
     } catch (error) {

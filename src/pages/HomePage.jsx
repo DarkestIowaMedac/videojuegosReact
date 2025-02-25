@@ -12,6 +12,7 @@ const HomePage = () => {
   const [loadingb, setLoadingb] = useState(true);
   const [loadingf, setLoadingf] = useState(true);
   localStorage.clear()
+  localStorage.setItem('search', 'games');
   useEffect(() => {
     const loadGames = async () => {
       try {

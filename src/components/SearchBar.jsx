@@ -9,7 +9,15 @@ const SearchBar = () => {
   const navigate = useNavigate()
 
   const handleSearch = (e) => {
-    navigate(`/games/${query}`)
+    const pagina = localStorage.getItem('search')
+    console.log(localStorage.getItem('search'))
+    if(pagina == 'publishers'){
+      navigate(`/publishers/${query}`)
+    }
+    else{
+      navigate(`/games/${query}`)
+    }
+    
   };
 
   

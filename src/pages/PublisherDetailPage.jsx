@@ -13,7 +13,8 @@ const PublisherDetailPage = () => {
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
+  localStorage.clear();
+  localStorage.setItem('search', 'publishers');
   useEffect(() => {
     const loadPublisherData = async () => {
       setLoading(true)

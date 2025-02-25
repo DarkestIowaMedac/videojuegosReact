@@ -2,7 +2,16 @@ const API_KEY = "e145f66352074fd2900cce478881b8a7"
 const BASE_URL = "https://api.rawg.io/api"
 
 
-export const fetchPublishers = async (page = 1) => {
+export const fetchPublishers = async (page = 1,query) => {
+  if(query){
+    const response = await fetch(`${BASE_URL}/publishers?key=${API_KEY}&search=${query}&page=${page}&page_size=40`)
+    if (!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+    const data = await response.json()
+    console.log(data)
+    return data
+  }
     const response = await fetch(`${BASE_URL}/publishers?key=${API_KEY}&page=${page}&page_size=40`)
     if (!response.ok) {
       throw new Error("Network response was not ok")

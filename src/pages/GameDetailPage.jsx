@@ -11,6 +11,7 @@ const GameDetailPage = () => {
   const [loadingd, setLoadingd] = useState(true)
   console.log(id)
   localStorage.clear()
+  localStorage.setItem('search', 'games');
   useEffect(() => {
   const loadspecificGame = async () => {
       setLoadingd(true)
