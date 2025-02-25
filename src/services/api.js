@@ -70,7 +70,18 @@ export const fetchAllGames = async (page = 1, filters) => {
   const genres = await fetchGenres()
   const idGenre = localizarId(genres, filters.genre)
 
-  queryParams.append("search", filters.search || defaultSearch)
+  let searchTerm
+  if(filters.search){
+    searchTerm = decodeURIComponent(filters.search)
+      .trim()
+      .split(' ')
+      .filter(word => word) // Eliminar espacios vacíos
+      .join(',');
+    
+    console.log('El searchTerm es'+searchTerm)
+    
+  }
+  queryParams.append("search", searchTerm || defaultSearch)
   queryParams.append("search_precise", "true")
   queryParams.append("page_size", "40")
   queryParams.append("ordering", "name")

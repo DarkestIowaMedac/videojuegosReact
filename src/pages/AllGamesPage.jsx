@@ -17,8 +17,10 @@ const AllGamesPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const savedFilters = JSON.parse(localStorage.getItem('filters')) || {};
+  localStorage.setItem('search', 'games');
+  
   const [filters, setFilters] = useState({
-    search: "",
+    search: query || "",
     genre: savedFilters.genre || "",
     metacritic: savedFilters.metacritic || 0,
     year: savedFilters.year || "",
@@ -57,15 +59,16 @@ const AllGamesPage = () => {
   }, []) 
 
   useEffect(() => {
-    console.log(filters)
+    //console.log(filters)
+    console.log('La query es'+query)
     loadAllGames(currentPage, filters) 
-  }, [currentPage, filters]) 
+  }, [currentPage, filters, query]) 
 
-  useEffect(() => {
-    if (query) {
-      setFilters((prev) => ({ ...prev, search: query })); 
-    }
-  }, [query]); 
+  // useEffect(() => {
+  //   if (query) {
+  //     setFilters((prev) => ({ ...prev, search: query })); 
+  //   }
+  // }, [query]); 
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
