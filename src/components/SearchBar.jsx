@@ -27,7 +27,7 @@ const SearchBar = () => {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Buscar..."
+        placeholder={localStorage.getItem('search') === 'publishers' ? "Buscar publishers..." : "Buscar videojuegos..."}
         className="flex-grow p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <button
