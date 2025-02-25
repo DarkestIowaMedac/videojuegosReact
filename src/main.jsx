@@ -16,7 +16,6 @@ root.render(
 TAREAS POR HACER:
 
 OPCIONAL
--Incorporar Logo (Opcional)
 -Hacer paginación en juegos recientes (Opcional)
 
 ASPECTOS A MEJORAR EN FUTURO
