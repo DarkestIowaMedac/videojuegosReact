@@ -151,7 +151,7 @@ const AllGamesPage = () => {
             onRemoveTag={handleRemoveTag}
           />
         </div>
-          <select name="genre" value={filters.genre} onChange={handleFilterChange} className="p-2 border rounded">
+          <select name="genre" value={filters.genre} onChange={handleFilterChange} className="h-10 p-2 border rounded">
             <option value="">Todos los géneros</option>
             {loadinggenres ? (
             <option disabled>Cargando géneros...</option> // Muestra este mensaje mientras se cargan los géneros
@@ -163,7 +163,7 @@ const AllGamesPage = () => {
             ))
             )}
           </select>
-          <select name="metacritic" value={filters.metacritic} onChange={handleFilterChange} className="p-2 border rounded">
+          <select name="metacritic" value={filters.metacritic} onChange={handleFilterChange} className=" h-10 p-2 border rounded">
             <option value="0">Todas las puntuaciones</option>
             <option value="81">81-100</option>
             <option value="61">61-80</option>
@@ -171,7 +171,7 @@ const AllGamesPage = () => {
             <option value="21">21-40</option>
             <option value="1">0-20</option>
           </select>
-          <select name="year" value={filters.year} onChange={handleFilterChange} className="p-2 border rounded">
+          <select name="year" value={filters.year} onChange={handleFilterChange} className=" h-10 p-2 border rounded">
             <option value="">Todos los años</option>
             {years.map((year) => (
               <option key={year} value={year}>

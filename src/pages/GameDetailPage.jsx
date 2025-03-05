@@ -37,6 +37,17 @@ const GameDetailPage = () => {
     }
     localStorage.setItem("filters", JSON.stringify(filters))
   }
+
+  const handleTagClick = (tag) => {
+    const filters = {
+      search: "",
+      tags: [tag],
+      genre: "",
+      metacritic: 0,
+      year: "",
+    }
+    localStorage.setItem("filters", JSON.stringify(filters))
+  }
   
   if (loadingd) {
     return (
@@ -80,6 +91,22 @@ const GameDetailPage = () => {
                 <div className="bg-green-100 text-green-800 rounded-full px-3 py-1 text-sm font-semibold">
                   Metacritic Score: {game.metacritic}
                 </div>
+                
+                {/* Tags del juego - Versión mejorada */}
+                {game.tags && game.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {game.tags.map((tag) => (
+                      <Link 
+                        key={tag.id} 
+                        to="/games" 
+                        onClick={() => handleTagClick(tag)}
+                        className="bg-purple-100 text-purple-800 rounded-full px-3 py-1 text-sm font-semibold hover:bg-purple-200 transition-colors"
+                      >
+                        {tag.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
               <p className="text-gray-700 text-lg mb-6">{game.description_raw}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -119,6 +146,8 @@ const GameDetailPage = () => {
                     </li>)}
                   </ul>
                 </div>
+                
+               
               </div>
             </div>
           </div>
