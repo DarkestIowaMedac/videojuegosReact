@@ -14,16 +14,23 @@ root.render(
 
 /*
 TAREAS POR HACER:
+-mejorar a estilos más llamativos y los de los tags añadido nuevo
+-GameDetails Tags y estiloso
+-permitir registro de usuarios
+-Página de perfil donde mostrar favoritos y eventos
+-Página de eventos
+-Opción de marcar juegos como favoritos y eventos como "apuntado" luego esto será mostrado en el perfil
+-Favoritos y eventos guardar en localStorage y que se quede dado como favorito en futuras recargas.
+(CUIDADO CON LA LIMPIEZA DE LOCALSTORAGE ACTUAL, LIMPIAR SOLO LA VARIABLE NECESARIA)
+-Funcional el QR
+-Redux
 
-OPCIONAL
--Hacer paginación en juegos recientes (Opcional)
-
-ASPECTOS A MEJORAR EN FUTURO
+OPCIONAL / ASPECTOS A MEJORAR EN FUTURO
+-Hacer paginación en juegos recientes 
 -metacriticScore podría ser un componente con 2 puntos de arrastre para elegir minimos y maximos
--mejorar a estilos más llamativos
--permitir registro de usuarios y que almacenen sus juegos deseados, adquiridos, etc.
 -Filtrado de publishers
--La lupa debe plantear un sistema que busque también los publishers
--Más filtros y añadir plataformas y demás elementos a tener en cuenta de la API así como sus filtros y tener en cuenta sus modos osc
+-Filtros de ordenación en la página de juegos
+
+
 
 */

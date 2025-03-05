@@ -7,6 +7,8 @@ import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
 import { fetchAllGames, fetchGenres } from "../services/api.js"
 import { useParams } from 'react-router-dom';
+import TagSearch from "../components/TagSearch"
+import SelectedTags from "../components/SelectedTags"
 
 const AllGamesPage = () => {
   const { query } = useParams();
@@ -16,16 +18,49 @@ const AllGamesPage = () => {
   const [loadinggenres, setLoadinggenres] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+
   const savedFilters = JSON.parse(localStorage.getItem('filters')) || {};
   localStorage.setItem('search', 'games');
   
+  const [selectedTags, setSelectedTags] = useState(savedFilters.tags ? 
+    (Array.isArray(savedFilters.tags) ? savedFilters.tags : [savedFilters.tags]) : 
+    []);
+    
   const [filters, setFilters] = useState({
     search: query || "",
+    tags: savedFilters.tags || [],
     genre: savedFilters.genre || "",
     metacritic: savedFilters.metacritic || 0,
     year: savedFilters.year || "",
   })
   
+  const handleTagSelect = (tag) => {
+    // Verificar si el tag ya está seleccionado
+    if (!selectedTags.some(t => t.id === tag.id)) {
+      const newSelectedTags = [...selectedTags, tag];
+      setSelectedTags(newSelectedTags);
+      
+      // Actualizar los filtros con los nuevos tags
+      setFilters(prev => {
+        const newFilters = { ...prev, tags: newSelectedTags };
+        localStorage.setItem('filters', JSON.stringify(newFilters));
+        return newFilters;
+      });
+    }
+  };
+  
+  const handleRemoveTag = (tagId) => {
+    const newSelectedTags = selectedTags.filter(tag => tag.id !== tagId);
+    setSelectedTags(newSelectedTags);
+    
+    // Actualizar los filtros sin el tag eliminado
+    setFilters(prev => {
+      const newFilters = { ...prev, tags: newSelectedTags };
+      localStorage.setItem('filters', JSON.stringify(newFilters));
+      return newFilters;
+    });
+  };
+
   const loadAllGames = async () => {
     setLoading(true)
     try {
@@ -104,8 +139,18 @@ const AllGamesPage = () => {
       <Header />
       <main className="p-4">
         <h2 className="mt-8 text-3xl font-bold text-center mb-6">Todos los Juegos</h2>
-
+        
         <div className="mb-6 flex flex-wrap gap-4 justify-center">
+        <div className="w-full max-w-xs mx-auto">
+          <TagSearch 
+            onTagSelect={handleTagSelect} 
+            selectedTags={selectedTags}
+          />
+          <SelectedTags 
+            tags={selectedTags} 
+            onRemoveTag={handleRemoveTag}
+          />
+        </div>
           <select name="genre" value={filters.genre} onChange={handleFilterChange} className="p-2 border rounded">
             <option value="">Todos los géneros</option>
             {loadinggenres ? (

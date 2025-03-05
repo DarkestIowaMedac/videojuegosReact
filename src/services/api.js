@@ -73,8 +73,16 @@ export const fetchBetterGames = async () => {
 
 export const fetchAllGames = async (page = 1, filters) => {
   const queryParams = new URLSearchParams();
-  const defaultSearch = `a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,
+  let defaultSearch
+  if(!filters.genre && !filters.search && !filters.metacritic && !filters.year && filters.tags.length == 0){
+    defaultSearch = `a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,
   Q,R,S,T,U,V,W,X,Y,Z,Á,É,Í,Ó,Ú,á,é,í,ó,ú,0,1,2,3,4,5,6,7,8,9,?,¿,¡,!,+,',],[,@,#,~,€,¬,.,-,_,(,),/,|,*,"`
+  }
+  else{
+    defaultSearch = ''
+    console.log("ahora si hay algún filtro")
+  }
+  
   
   const genres = await fetchGenres()
   const idGenre = localizarId(genres, filters.genre)
@@ -118,8 +126,16 @@ export const fetchAllGames = async (page = 1, filters) => {
       queryParams.append("dates", `${filters.year}-01-01,${filters.year}-12-31`)
     }
   }
-  console.log(filters.genre)
+  //console.log(filters.genre)
  // `${BASE_URL}/games?key=${API_KEY}&page=${page}&page_size=40&ordering=name&search_precise=true&search=a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,Ñ,O,P,Q,R,S,T,U,V,W,X,Y,Z,Á,É,Í,Ó,Ú,á,é,í,ó,ú,0,1,2,3,4,5,6,7,8,9,?,¿,¡,!,+,',],[,@,#,~,€,¬,.,-,_,(,),/,|,*,"`,
+ if (filters.tags && filters.tags.length > 0) {
+  // Si tags es un array, lo convertimos a string separado por comas
+  const tagsParam = Array.isArray(filters.tags) 
+    ? filters.tags.map(tag => tag.id).join(',')
+    : filters.tags;
+  
+  queryParams.append('tags', tagsParam);
+}
  console.log(`${BASE_URL}/games?key=${API_KEY}&page=${page}&${queryParams.toString()}`);
  const response = await fetch(
   `${BASE_URL}/games?key=${API_KEY}&page=${page}&${queryParams.toString()}`,
@@ -158,6 +174,20 @@ export const fetchGenres = async () => {
   } catch (error) {
     console.error("Error fetching genres:", error);
     throw error; // Lanza el error para que pueda ser manejado en otro lugar
+  }
+};
+
+export const fetchTags = async (searchQuery = '') => {
+  try {
+    const response = await fetch(`${BASE_URL}/tags?key=${API_KEY}&page_size=20${searchQuery ? `&search=${searchQuery}` : ''}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data.results; // Devuelve la lista de tags
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    throw error;
   }
 };
 
