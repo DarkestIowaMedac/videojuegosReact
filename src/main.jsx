@@ -14,8 +14,7 @@ root.render(
 
 /*
 TAREAS POR HACER:
--mejorar a estilos más llamativos y los de los tags añadido nuevo
--GameDetails Tags y estiloso
+-Mejorar estilos generales y preguntar por Notas entrega anterior
 -permitir registro de usuarios
 -Página de perfil donde mostrar favoritos y eventos
 -Página de eventos
