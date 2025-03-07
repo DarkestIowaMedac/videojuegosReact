@@ -17,6 +17,10 @@ const Header = () => {
     localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
     navigate("/publishers"); // Redirige a la página de juegos
   };
+  const handleEventsClick = () => {
+    //localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
+    navigate("/events"); // Redirige a la página de juegos
+  };
   // const handleSearch = () => {
   //   //console.log('Buscar:', query);
   //   //
@@ -38,8 +42,8 @@ const Header = () => {
             <a href="" onClick={handlePublishersClick} className="text-white hover:text-gray-300">
               Publishers
             </a>
-            <a href="#" className="text-white hover:text-gray-300">
-              Sobre Nosotros
+            <a href="" onClick={handleEventsClick} className="text-white hover:text-gray-300">
+              Eventos
             </a>
           </nav>
           <button onClick={() => setShowMenu(!showMenu)} className="sm:hidden text-white text-2xl">

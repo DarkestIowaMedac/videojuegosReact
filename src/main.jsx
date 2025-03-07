@@ -14,12 +14,15 @@ root.render(
 
 /*
 TAREAS POR HACER:
--Mejorar estilos generales y preguntar por Notas entrega anterior
--permitir registro de usuarios
--Página de perfil donde mostrar favoritos y eventos
--Página de eventos
--Opción de marcar juegos como favoritos y eventos como "apuntado" luego esto será mostrado en el perfil
+-Estilos Claroscuros Mejores
+-Mejorar estilos generales 
+----
+-botón fav en juegos
+-Cambiar los clears para que solo limpien una variable
 -Favoritos y eventos guardar en localStorage y que se quede dado como favorito en futuras recargas.
+-Página de perfil
+-permitir registro de usuarios
+-Mostrar en perfil los favs y eventos
 (CUIDADO CON LA LIMPIEZA DE LOCALSTORAGE ACTUAL, LIMPIAR SOLO LA VARIABLE NECESARIA)
 -Funcional el QR
 -Redux

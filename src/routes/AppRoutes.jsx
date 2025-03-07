@@ -5,7 +5,7 @@ import GameDetailPage from '../pages/GameDetailPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import AllPublishersPage from '../pages/AllPublishersPage';
 import PublisherDetailPage from '../pages/PublisherDetailPage';
-
+import EventsPage from '../pages/EventsPage';
 const AppRoutes = () => {
     return (
       
@@ -22,6 +22,8 @@ const AppRoutes = () => {
           <Route path="/publishers" element={<AllPublishersPage />} />
 
           <Route path="/publisher/:id" element={<PublisherDetailPage />} />
+
+          <Route path="/events" element={<EventsPage />} />
 
           <Route path="/" element={<HomePage />} />
 
