@@ -1,131 +1,143 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 import Header from "../components/Header"
 import GameCard from "../components/GameCard"
 import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
-import { fetchAllGames, fetchGenres } from "../services/api.js"
-import { useParams } from "react-router-dom"
 import TagSearch from "../components/TagSearch"
 import SelectedTags from "../components/SelectedTags"
+import { fetchGamesAsync, setCurrentPage, fetchGenresAsync } from "../store/slices/gamesSlice"
+import {
+  addTag,
+  removeTag,
+  setGenre,
+  setMetacritic,
+  setYear,
+  setSort,
+  saveFiltersToLocalStorage,
+  setSearch,
+  setFilters,
+} from "../store/slices/filtersSlice"
 
 const AllGamesPage = () => {
   const { query } = useParams()
-  const [allGames, setAllGames] = useState([])
-  const [allGenres, setAllGenres] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [loadinggenres, setLoadinggenres] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const dispatch = useDispatch()
 
-  const savedFilters = JSON.parse(localStorage.getItem("filters")) || {}
-  localStorage.setItem("search", "games")
+  // Ref para controlar si ya se ha hecho la petición inicial
+  const initialFetchDone = useRef(false)
 
-  const [selectedTags, setSelectedTags] = useState(
-    savedFilters.tags ? (Array.isArray(savedFilters.tags) ? savedFilters.tags : [savedFilters.tags]) : [],
-  )
+  const { allGames, genres, currentPage, totalPages, loading } = useSelector((state) => ({
+    allGames: state.games.allGames,
+    genres: state.games.genres,
+    currentPage: state.games.currentPage,
+    totalPages: state.games.totalPages,
+    loading: {
+      allGames: state.games.loading.allGames,
+      genres: state.games.loading.genres,
+    },
+  }))
 
-  const [filters, setFilters] = useState({
-    search: query || "",
-    tags: savedFilters.tags || [],
-    genre: savedFilters.genre || "",
-    metacritic: savedFilters.metacritic || 0,
-    year: savedFilters.year || "",
-    sort: savedFilters.sort || "alphabetical",
-  })
+  const filters = useSelector((state) => state.filters)
+  const selectedTags = useSelector((state) => state.filters.selectedTags)
+
+  // Efecto para la carga inicial - solo se ejecuta una vez
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        // Configuración básica
+        localStorage.setItem("search", "games")
+
+        // Cargar filtros directamente desde localStorage para asegurar que tenemos los datos correctos
+        const savedFilters = JSON.parse(localStorage.getItem("filters")) || {}
+        console.log("Filtros cargados directamente desde localStorage:", savedFilters)
+
+        // Aplicar los filtros guardados al estado de Redux
+        await dispatch(setFilters(savedFilters))
+
+        // Si hay query en la URL, actualizar el filtro de búsqueda
+        if (query) {
+          await dispatch(setSearch(query))
+        }
+
+        // Cargar géneros (puede ocurrir en paralelo)
+        dispatch(fetchGenresAsync())
+
+        // Hacer UNA ÚNICA petición con los filtros ya cargados
+        await dispatch(fetchGamesAsync({ page: currentPage }))
+
+        // Marcar que ya se ha hecho la petición inicial
+        initialFetchDone.current = true
+      } catch (error) {
+        console.error("Error durante la inicialización:", error)
+        // Incluso si hay un error, marcamos como inicializado para evitar bucles
+        initialFetchDone.current = true
+      }
+    }
+
+    // Solo ejecutar la inicialización si no se ha hecho ya la petición inicial
+    if (!initialFetchDone.current) {
+      initialize()
+    }
+  }, []) // Dependencias vacías intencionalmente para que solo se ejecute una vez
+
+  // Efecto para manejar cambios en filtros o página - solo se ejecuta después de la inicialización
+  useEffect(() => {
+    // Solo ejecutar este efecto si ya se ha hecho la petición inicial
+    // Y si hay cambios en los filtros o la página (no durante la carga inicial)
+    if (initialFetchDone.current) {
+      dispatch(saveFiltersToLocalStorage())
+      dispatch(fetchGamesAsync({ page: currentPage }))
+    }
+  }, [dispatch, currentPage, filters])
+
+  // Efecto para manejar cambios en la query de la URL
+  useEffect(() => {
+    if (initialFetchDone.current && query) {
+      dispatch(setSearch(query))
+    }
+  }, [dispatch, query])
 
   const handleTagSelect = (tag) => {
-
-    if (!selectedTags.some((t) => t.id === tag.id)) {
-      const newSelectedTags = [...selectedTags, tag]
-      setSelectedTags(newSelectedTags)
-
-      setFilters((prev) => {
-        const newFilters = { ...prev, tags: newSelectedTags }
-        localStorage.setItem("filters", JSON.stringify(newFilters))
-        return newFilters
-      })
-    }
+    dispatch(addTag(tag))
   }
 
   const handleRemoveTag = (tagId) => {
-    const newSelectedTags = selectedTags.filter((tag) => tag.id !== tagId)
-    setSelectedTags(newSelectedTags)
-
-    setFilters((prev) => {
-      const newFilters = { ...prev, tags: newSelectedTags }
-      localStorage.setItem("filters", JSON.stringify(newFilters))
-      return newFilters
-    })
+    dispatch(removeTag(tagId))
   }
-
-  const loadAllGames = async () => {
-    setLoading(true)
-    try {
-      const data = await fetchAllGames(currentPage, filters)
-      setAllGames(data.results)
-      setTotalPages(Math.ceil(data.count / 40))
-    } catch (error) {
-      console.error("Error loading games:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const loadGenres = async () => {
-    setLoadinggenres(true)
-    try {
-      const data = await fetchGenres()
-      console.log("los datos")
-      console.log(data)
-      setAllGenres(data)
-    } catch (error) {
-      console.error("Error loading games:", error)
-    } finally {
-      setLoadinggenres(false)
-    }
-  }
-
-  useEffect(() => {
-    loadGenres()
-  }, [])
-
-  useEffect(() => {
-    //console.log(filters)
-    console.log("La query es" + query)
-    loadAllGames(currentPage, filters)
-  }, [currentPage, filters, query])
-
-  // useEffect(() => {
-  //   if (query) {
-  //     setFilters((prev) => ({ ...prev, search: query }));
-  //   }
-  // }, [query]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target
-    setFilters((prev) => {
-      const newFilters = { ...prev, [name]: value }
-      localStorage.setItem("filters", JSON.stringify(newFilters))
-      console.log("losfiltros")
-      console.log(newFilters)
-      console.log(filters)
-      return newFilters
-    })
+
+    switch (name) {
+      case "genre":
+        dispatch(setGenre(value))
+        break
+      case "metacritic":
+        dispatch(setMetacritic(value))
+        break
+      case "year":
+        dispatch(setYear(value))
+        break
+      case "sort":
+        dispatch(setSort(value))
+        break
+      default:
+        break
+    }
   }
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-      console.log(currentPage)
+      dispatch(setCurrentPage(currentPage - 1))
     }
   }
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
-      console.log(currentPage)
+      dispatch(setCurrentPage(currentPage + 1))
     }
   }
 
@@ -163,16 +175,19 @@ const AllGamesPage = () => {
             <TagSearch onTagSelect={handleTagSelect} selectedTags={selectedTags} />
             <SelectedTags tags={selectedTags} onRemoveTag={handleRemoveTag} />
           </div>
-          <select name="genre" value={filters.genre} onChange={handleFilterChange} className="h-10 text-black p-2 border rounded">
+          <select
+            name="genre"
+            value={filters.genre}
+            onChange={handleFilterChange}
+            className="h-10 text-black p-2 border rounded"
+          >
             <option value="">Todos los géneros</option>
-            {loadinggenres ? (
-              <option disabled>Cargando géneros...</option> // Muestra este mensaje mientras se cargan los géneros
+            {loading.genres ? (
+              <option disabled>Cargando géneros...</option>
             ) : (
-              allGenres.map((genre) => (
+              genres.map((genre) => (
                 <option className="h-10 text-black" key={genre.name} value={genre.name}>
-                  {" "}
-                  {/* Asegúrate de usar genre.id como valor */}
-                  {genre.name} {/* Muestra el nombre del género */}
+                  {genre.name}
                 </option>
               ))
             )}
@@ -181,7 +196,7 @@ const AllGamesPage = () => {
             name="metacritic"
             value={filters.metacritic}
             onChange={handleFilterChange}
-            className=" h-10 p-2 border rounded"
+            className="h-10 p-2 border rounded"
           >
             <option value="0">Todas las puntuaciones</option>
             <option value="81">81-100</option>
@@ -190,7 +205,7 @@ const AllGamesPage = () => {
             <option value="21">21-40</option>
             <option value="1">0-20</option>
           </select>
-          <select name="year" value={filters.year} onChange={handleFilterChange} className=" h-10 p-2 border rounded">
+          <select name="year" value={filters.year} onChange={handleFilterChange} className="h-10 p-2 border rounded">
             <option value="">Todos los años</option>
             {years.map((year) => (
               <option key={year} value={year}>
@@ -205,7 +220,7 @@ const AllGamesPage = () => {
           </select>
         </div>
 
-        {loading ? (
+        {loading.allGames ? (
           <p className="text-center">Cargando juegos...</p>
         ) : (
           <>
@@ -223,7 +238,6 @@ const AllGamesPage = () => {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 flex justify-center items-center gap-4">{/* Contenido de la paginación */}</div>
               </div>
             </div>
             <div className="mt-6 flex justify-center items-center gap-4">

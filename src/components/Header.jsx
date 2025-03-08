@@ -5,37 +5,43 @@ import { GiHamburgerMenu } from "react-icons/gi"
 import { GrClose } from "react-icons/gr"
 import SearchBar from "./SearchBar"
 import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { clearFilters } from "../store/slices/filtersSlice"
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false)
-  const navigate = useNavigate();
-  const handleGamesClick = () => {
-    localStorage.removeItem('filters'); // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/games"); 
-  };
-  const handlePublishersClick = () => {
-    localStorage.removeItem('filters'); // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/publishers"); 
-  };
-  const handleEventsClick = () => {
-    localStorage.removeItem('filters') // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/events"); 
-  };
-  const handleProfileClick = () => {
-    localStorage.removeItem('filters') // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/Profile"); 
-  };
-  // const handleSearch = () => {
-  //   //console.log('Buscar:', query);
-  //   //
-  // };
-  
-  
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleGamesClick = (e) => {
+    e.preventDefault()
+    dispatch(clearFilters())
+    navigate("/games")
+  }
+
+  const handlePublishersClick = (e) => {
+    e.preventDefault()
+    dispatch(clearFilters())
+    navigate("/publishers")
+  }
+
+  const handleEventsClick = (e) => {
+    e.preventDefault()
+    dispatch(clearFilters())
+    navigate("/events")
+  }
+
+  const handleProfileClick = (e) => {
+    e.preventDefault()
+    dispatch(clearFilters())
+    navigate("/Profile")
+  }
+
   return (
     <header className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <a href="/" className="text-white text-2xl font-bold">
-        <img src={`/logo.png`} className="w-14" alt="Logo" />
+          <img src={`/logo.png`} className="w-14" alt="Logo" />
         </a>
         <div className="flex items-center space-x-12">
           <SearchBar className="h-10" />
@@ -61,14 +67,17 @@ const Header = () => {
 
       {showMenu && (
         <nav className="sm:hidden flex flex-col items-center mt-4">
-          <a href="/games" className="text-white hover:text-gray-300 mb-2">
+          <a href="" onClick={handleGamesClick} className="text-white hover:text-gray-300 mb-2">
             Juegos
           </a>
-          <a href="#" className="text-white hover:text-gray-300 mb-2">
-            Sobre nosotros
+          <a href="" onClick={handlePublishersClick} className="text-white hover:text-gray-300 mb-2">
+            Publishers
           </a>
-          <a href="#" className="text-white hover:text-gray-300 mb-2">
-            Contacto
+          <a href="" onClick={handleEventsClick} className="text-white hover:text-gray-300 mb-2">
+            Eventos
+          </a>
+          <a href="" onClick={handleProfileClick} className="text-white hover:text-gray-300 mb-2">
+            Profile
           </a>
         </nav>
       )}

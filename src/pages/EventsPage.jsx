@@ -1,100 +1,19 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import EventCard from "../components/EventCard"
+import { loadRegisteredEvents } from "../store/slices/eventsSlice"
 
 const EventsPage = () => {
-  const [upcomingEvents, setUpcomingEvents] = useState([
-    {
-      id: 1,
-      title: "E3 2024",
-      date: "12-15 Junio, 2024",
-      location: "Los Angeles, CA",
-      image: "/images1.jpg?height=200&width=350",
-      description: "La mayor exposición de videojuegos del mundo regresa con anuncios exclusivos y demos jugables.",
-    },
-    {
-      id: 2,
-      title: "Gamescom 2024",
-      date: "21-25 Agosto, 2024",
-      location: "Colonia, Alemania",
-      image: "/images2.jpg?height=200&width=350",
-      description: "La feria de videojuegos más grande de Europa con cientos de expositores y novedades.",
-    },
-    {
-      id: 3,
-      title: "Tokyo Game Show 2024",
-      date: "26-29 Septiembre, 2024",
-      location: "Tokio, Japón",
-      image: "/images3.jpg?height=200&width=350",
-      description: "Descubre las últimas novedades de los desarrolladores japoneses y asiáticos.",
-    },
-    {
-      id: 4,
-      title: "PAX East 2024",
-      date: "23-26 Marzo, 2024",
-      location: "Boston, MA",
-      image: "/images4.png?height=200&width=350",
-      description: "Festival de juegos para todos los públicos con paneles, torneos y zona de exposición.",
-    },
-    {
-      id: 5,
-      title: "BlizzCon 2024",
-      date: "1-2 Noviembre, 2024",
-      location: "Anaheim, CA",
-      image: "/images5.jpg?height=200&width=350",
-      description: "La convención anual de Blizzard Entertainment con anuncios de sus franquicias más populares.",
-    },
-    {
-      id: 6,
-      title: "Game Awards 2024",
-      date: "12 Diciembre, 2024",
-      location: "Los Angeles, CA",
-      image: "/images6.jpg?height=200&width=350",
-      description: "La ceremonia anual de premios que celebra lo mejor de la industria de los videojuegos.",
-    },
-    {
-      id: 7,
-      title: "Indie Game Festival",
-      date: "18-20 Julio, 2024",
-      location: "San Francisco, CA",
-      image: "/images7.jpg?height=200&width=350",
-      description: "Celebración de los juegos independientes con premios, charlas y oportunidades de networking.",
-    },
-    {
-      id: 8,
-      title: "GameDev Conference",
-      date: "4-8 Marzo, 2024",
-      location: "San Francisco, CA",
-      image: "/images8.png?height=200&width=350",
-      description: "La conferencia más importante para desarrolladores de videojuegos con talleres y charlas.",
-    },
-  ])
-
-  const [registeredEvents, setRegisteredEvents] = useState([])
+  const dispatch = useDispatch()
+  const { events, registeredEvents } = useSelector((state) => state.events)
 
   useEffect(() => {
-    const storedEvents = localStorage.getItem("registeredEvents")
-    if (storedEvents) {
-      setRegisteredEvents(JSON.parse(storedEvents))
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem("registeredEvents", JSON.stringify(registeredEvents))
-  }, [registeredEvents])
-
-  const toggleEventRegistration = (eventId) => {
-    setRegisteredEvents((prevRegisteredEvents) => {
-      if (prevRegisteredEvents.includes(eventId)) {
-        return prevRegisteredEvents.filter((id) => id !== eventId)
-      } else {
-        return [...prevRegisteredEvents, eventId]
-      }
-    })
-  }
+    dispatch(loadRegisteredEvents())
+  }, [dispatch])
 
   return (
     <div>
@@ -109,7 +28,7 @@ const EventsPage = () => {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {upcomingEvents.map((event) => (
+              {events.map((event) => (
                 <EventCard
                   key={event.id}
                   id={event.id}
@@ -119,7 +38,6 @@ const EventsPage = () => {
                   image={event.image}
                   description={event.description}
                   isRegistered={registeredEvents.includes(event.id)}
-                  onToggleRegistration={toggleEventRegistration}
                 />
               ))}
             </div>

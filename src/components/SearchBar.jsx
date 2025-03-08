@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
-//import { fetchSpecificGame} from '../services/api';
-import { useEffect } from 'react';
+"use client"
+
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { setSearch } from "../store/slices/filtersSlice"
 
 const SearchBar = () => {
-  const [query, setQuery] = useState('');
-
+  const [query, setQuery] = useState("")
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleSearch = (e) => {
-    const pagina = localStorage.getItem('search')
-    console.log(localStorage.getItem('search'))
-    if(pagina == 'publishers'){
+    e.preventDefault()
+    const pagina = localStorage.getItem("search")
+
+    if (pagina === "publishers") {
       navigate(`/publishers/${query}`)
-    }
-    else{
+    } else {
+      dispatch(setSearch(query))
       navigate(`/games/${query}`)
     }
-    
-  };
+  }
 
-  
   return (
     <form onSubmit={handleSearch} className="flex items-center max-w-md mx-auto">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder={localStorage.getItem('search') === 'publishers' ? "Buscar publishers..." : "Buscar videojuegos..."}
+        placeholder={localStorage.getItem("search") === "publishers" ? "Buscar publishers..." : "Buscar videojuegos..."}
         className="flex-grow p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <button
@@ -37,7 +38,8 @@ const SearchBar = () => {
         Buscar
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default SearchBar;
+export default SearchBar
+

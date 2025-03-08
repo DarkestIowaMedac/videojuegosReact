@@ -1,39 +1,33 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import GameCard from "../components/GameCard"
-import { fetchPublisherDetails, fetchPublisherGames } from "../services/api"
+import { fetchPublisherDetailsAsync, fetchPublisherGamesAsync } from "../store/slices/publishersSlice"
 
 const PublisherDetailPage = () => {
   const { id } = useParams()
-  const [publisher, setPublisher] = useState(null)
-  const [games, setGames] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  localStorage.removeItem('search');
-  localStorage.setItem('search', 'publishers');
+  const dispatch = useDispatch()
+
+  const { publisherDetails, publisherGames, loading } = useSelector((state) => ({
+    publisherDetails: state.publishers.publisherDetails,
+    publisherGames: state.publishers.publisherGames,
+    loading: {
+      publisherDetails: state.publishers.loading.publisherDetails,
+      publisherGames: state.publishers.loading.publisherGames,
+    },
+  }))
+
   useEffect(() => {
-    const loadPublisherData = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const [publisherData, gamesData] = await Promise.all([fetchPublisherDetails(id), fetchPublisherGames(id)])
-        setPublisher(publisherData)
-        setGames(gamesData)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
+    localStorage.setItem("search", "publishers")
+    dispatch(fetchPublisherDetailsAsync(id))
+    dispatch(fetchPublisherGamesAsync(id))
+  }, [dispatch, id])
 
-    loadPublisherData()
-  }, [id])
-
-  if (loading) {
+  if (loading.publisherDetails || loading.publisherGames) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
@@ -41,10 +35,10 @@ const PublisherDetailPage = () => {
     )
   }
 
-  if (error || !publisher) {
+  if (!publisherDetails) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold mb-4">{error || "Distribuidora no encontrada"}</h1>
+        <h1 className="text-3xl font-bold mb-4">Distribuidora no encontrada</h1>
         <Link to="/publishers" className="text-blue-500 hover:underline">
           Volver a distribuidoras
         </Link>
@@ -59,22 +53,22 @@ const PublisherDetailPage = () => {
         <div className="bg-white shadow-xl rounded-lg overflow-hidden max-w-3xl mx-auto mb-12">
           <div className="relative h-96">
             <img
-              src={publisher.image_background || "/placeholder.svg"}
-              alt={publisher.name}
+              src={publisherDetails.image_background || "/placeholder.svg"}
+              alt={publisherDetails.name}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
-              <h1 className="text-4xl font-bold text-white p-6">{publisher.name}</h1>
+              <h1 className="text-4xl font-bold text-white p-6">{publisherDetails.name}</h1>
             </div>
           </div>
           <div className="p-6">
             <div className="flex flex-wrap gap-4 mb-6">
               <div className="bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold">
-                {publisher.games_count.toLocaleString()} juegos publicados
+                {publisherDetails.games_count.toLocaleString()} juegos publicados
               </div>
-              {publisher.website && (
+              {publisherDetails.website && (
                 <a
-                  href={publisher.website}
+                  href={publisherDetails.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-100 text-green-800 rounded-full px-3 py-1 text-sm font-semibold hover:bg-green-200 transition-colors"
@@ -83,13 +77,16 @@ const PublisherDetailPage = () => {
                 </a>
               )}
             </div>
-            {publisher.description && (
-              <div className="text-gray-700 text-lg mb-6" dangerouslySetInnerHTML={{ __html: publisher.description }} />
+            {publisherDetails.description && (
+              <div
+                className="text-gray-700 text-lg mb-6"
+                dangerouslySetInnerHTML={{ __html: publisherDetails.description }}
+              />
             )}
-            {publisher.description_raw && (
+            {publisherDetails.description_raw && (
               <div>
                 <h2 className="text-xl font-semibold mb-2">Información Adicional</h2>
-                <p className="text-gray-700">{publisher.description_raw}</p>
+                <p className="text-gray-700">{publisherDetails.description_raw}</p>
               </div>
             )}
           </div>
@@ -98,7 +95,7 @@ const PublisherDetailPage = () => {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl font-bold mb-6">Juegos Destacados</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {games.map((game) => (
+            {publisherGames.map((game) => (
               <GameCard
                 key={game.id}
                 id={game.id}

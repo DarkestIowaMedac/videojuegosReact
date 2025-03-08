@@ -1,9 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { toggleEventRegistration } from "../store/slices/eventsSlice"
 
 const EventCard = ({ id, title, date, location, image, description, isRegistered, onToggleRegistration }) => {
   const [showQR, setShowQR] = useState(false)
+  const dispatch = useDispatch()
 
   const generateShareUrl = () => {
     const baseUrl = window.location.origin + "/event-join"
@@ -38,6 +41,13 @@ const EventCard = ({ id, title, date, location, image, description, isRegistered
         })
       }
     }, 100)
+  }
+
+  const handleToggleRegistration = () => {
+    dispatch(toggleEventRegistration(id))
+    if (onToggleRegistration) {
+      onToggleRegistration(id)
+    }
   }
 
   return (
@@ -90,7 +100,7 @@ const EventCard = ({ id, title, date, location, image, description, isRegistered
 
         <div className="flex flex-col gap-2">
           <button
-            onClick={() => onToggleRegistration(id)}
+            onClick={handleToggleRegistration}
             className={`w-full font-bold py-2 px-4 rounded transition duration-300 ${
               isRegistered ? "bg-red-500 hover:bg-red-600 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"
             }`}
@@ -132,3 +142,4 @@ const EventCard = ({ id, title, date, location, image, description, isRegistered
 }
 
 export default EventCard
+

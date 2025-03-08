@@ -1,46 +1,39 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
 import PublisherCard from "../components/PublisherCard"
-import { fetchPublishers } from "../services/api"
-import { useParams } from 'react-router-dom';
+import { fetchPublishersAsync, setCurrentPage } from "../store/slices/publishersSlice"
 
 const AllPublishersPage = () => {
-  const { query } = useParams();
-  const [publishers, setPublishers] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  localStorage.setItem('search', 'publishers');
-  const loadPublishers = async () => {
-    setLoading(true)
-    try {
-      const data = await fetchPublishers(currentPage,query)
-      setPublishers(data.results)
-      setTotalPages(Math.ceil(data.count / 40))
-    } catch (error) {
-      console.error("Error loading publishers:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { query } = useParams()
+  const dispatch = useDispatch()
+
+  const { publishers, currentPage, totalPages, loading } = useSelector((state) => ({
+    publishers: state.publishers.publishers,
+    currentPage: state.publishers.currentPage,
+    totalPages: state.publishers.totalPages,
+    loading: state.publishers.loading.publishers,
+  }))
 
   useEffect(() => {
-    loadPublishers()
-  }, [])
+    localStorage.setItem("search", "publishers")
+    dispatch(fetchPublishersAsync({ page: currentPage, query }))
+  }, [dispatch, currentPage, query])
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      dispatch(setCurrentPage(currentPage - 1))
     }
   }
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+      dispatch(setCurrentPage(currentPage + 1))
     }
   }
 

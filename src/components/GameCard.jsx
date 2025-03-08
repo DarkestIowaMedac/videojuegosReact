@@ -1,54 +1,27 @@
 "use client"
-
-import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { toggleFavorite } from "../store/slices/userSlice"
 
 const GameCard = ({ id, title, image, description }) => {
   const navigate = useNavigate()
-  const [isFavorite, setIsFavorite] = useState(false)
-
-  useEffect(() => {
-    const checkFavorite = () => {
-      const favs = JSON.parse(localStorage.getItem("favs")) || []
-      setIsFavorite(favs.some((fav) => fav.id === id))
-    }
-
-    checkFavorite()
-
-    window.addEventListener("favoritesChanged", checkFavorite)
-
-    return () => {
-      window.removeEventListener("favoritesChanged", checkFavorite)
-    }
-  }, [id])
+  const dispatch = useDispatch()
+  const favorites = useSelector((state) => state.user.favorites)
+  const isFavorite = favorites.some((fav) => fav.id === id)
 
   const handleDetailsClick = () => {
     navigate(`/game/${id}`)
   }
 
-  const toggleFavorite = (e) => {
+  const handleToggleFavorite = (e) => {
     e.stopPropagation() // Prevenir que se active el click del card
-
-    const favs = JSON.parse(localStorage.getItem("favs")) || []
-
-    if (isFavorite) {
-      const updatedFavs = favs.filter((fav) => fav.id !== id)
-      localStorage.setItem("favs", JSON.stringify(updatedFavs))
-    } else {
-      const updatedFavs = [...favs, { id, title: title || "", image }]
-      localStorage.setItem("favs", JSON.stringify(updatedFavs))
-    }
-
-    setIsFavorite(!isFavorite)
-
-    window.dispatchEvent(new Event("favoritesChanged"))
+    dispatch(toggleFavorite({ id, title, image }))
   }
 
   return (
     <div className="oscuro w-full h-[350px] rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105 relative">
-     
       <button
-        onClick={toggleFavorite}
+        onClick={handleToggleFavorite}
         className="absolute top-2 right-2 bg-white/80 hover:bg-white p-1.5 rounded-full shadow-md z-10 transition-colors"
         aria-label="Añadir a favoritos"
       >

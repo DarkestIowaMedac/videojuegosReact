@@ -1,19 +1,23 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import { setCurrentEvent, registerForEvent } from "../store/slices/eventsSlice"
 
 const EventsJoinPage = () => {
-  const [event, setEvent] = useState(null)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { currentEvent, registeredEvents } = useSelector((state) => state.events)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [registered, setRegistered] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
-    const registerForEvent = () => {
+    const registerForEventFromUrl = () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const eventDataParam = urlParams.get("eventData")
@@ -23,18 +27,12 @@ const EventsJoinPage = () => {
         }
 
         const eventData = JSON.parse(eventDataParam)
-        setEvent(eventData)
+        dispatch(setCurrentEvent(eventData))
 
-        const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents")) || []
-        const isAlreadyRegistered = registeredEvents.includes(eventData.id)
-
-        if (!isAlreadyRegistered) {
-          const updatedRegisteredEvents = [...registeredEvents, eventData.id]
-          localStorage.setItem("registeredEvents", JSON.stringify(updatedRegisteredEvents))
-          window.dispatchEvent(new Event("storage"))
+        if (!registeredEvents.includes(eventData.id)) {
+          dispatch(registerForEvent(eventData.id))
         }
 
-        setRegistered(true)
         setLoading(false)
       } catch (err) {
         console.error("Error al procesar el evento:", err)
@@ -43,8 +41,8 @@ const EventsJoinPage = () => {
       }
     }
 
-    registerForEvent()
-  }, [])
+    registerForEventFromUrl()
+  }, [dispatch, registeredEvents])
 
   const handleGoToEvents = () => {
     navigate("/events")
@@ -125,12 +123,16 @@ const EventsJoinPage = () => {
             <p className="text-gray-600">Has sido registrado correctamente en el evento.</p>
           </div>
 
-          {event && (
+          {currentEvent && (
             <div className="mb-8">
               <div className="h-48 overflow-hidden rounded-lg mb-4">
-                <img src={event.image || "/placeholder.svg"} alt={event.title} className="w-full h-full object-cover" />
+                <img
+                  src={currentEvent.image || "/placeholder.svg"}
+                  alt={currentEvent.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h2 className="text-2xl font-bold mb-2">{event.title}</h2>
+              <h2 className="text-2xl font-bold mb-2">{currentEvent.title}</h2>
               <div className="flex items-center text-gray-600 mb-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +148,7 @@ const EventsJoinPage = () => {
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
                 </svg>
-                <span>{event.date}</span>
+                <span>{currentEvent.date}</span>
               </div>
               <div className="flex items-center text-gray-600 mb-3">
                 <svg
@@ -169,9 +171,9 @@ const EventsJoinPage = () => {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span>{event.location}</span>
+                <span>{currentEvent.location}</span>
               </div>
-              <p className="text-gray-700">{event.description}</p>
+              <p className="text-gray-700">{currentEvent.description}</p>
             </div>
           )}
 
@@ -197,3 +199,4 @@ const EventsJoinPage = () => {
 }
 
 export default EventsJoinPage
+

@@ -1,127 +1,23 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import Header from "../components/Header"
 import GameCard from "../components/GameCard"
 import Footer from "../components/Footer"
 import EventCard from "../components/EventCard"
+import { loadFavorites, setActiveTab } from "../store/slices/userSlice"
+import { loadRegisteredEvents } from "../store/slices/eventsSlice"
+
 const ProfilePage = () => {
-  const [activeTab, setActiveTab] = useState("events")
-  const [favorites, setFavorites] = useState([])
-  const [registeredEvents, setRegisteredEvents] = useState([])
-  const [events, setEvents] = useState([])
+  const dispatch = useDispatch()
+  const { activeTab, favorites } = useSelector((state) => state.user)
+  const { events, registeredEvents } = useSelector((state) => state.events)
 
   useEffect(() => {
-    const loadFavorites = () => {
-      const favs = JSON.parse(localStorage.getItem("favs")) || []
-      setFavorites(favs)
-    }
-
-    const loadRegisteredEvents = () => {
-      const registeredIds = JSON.parse(localStorage.getItem("registeredEvents")) || []
-      setRegisteredEvents(registeredIds)
-
-      const allEvents = [
-        {
-          id: 1,
-          title: "E3 2024",
-          date: "12-15 Junio, 2024",
-          location: "Los Angeles, CA",
-          image: "/images1.jpg?height=200&width=350",
-          description: "La mayor exposición de videojuegos del mundo regresa con anuncios exclusivos y demos jugables.",
-        },
-        {
-          id: 2,
-          title: "Gamescom 2024",
-          date: "21-25 Agosto, 2024",
-          location: "Colonia, Alemania",
-          image: "/images2.jpg?height=200&width=350",
-          description: "La feria de videojuegos más grande de Europa con cientos de expositores y novedades.",
-        },
-        {
-          id: 3,
-          title: "Tokyo Game Show 2024",
-          date: "26-29 Septiembre, 2024",
-          location: "Tokio, Japón",
-          image: "/images3.jpg?height=200&width=350",
-          description: "Descubre las últimas novedades de los desarrolladores japoneses y asiáticos.",
-        },
-        {
-          id: 4,
-          title: "PAX East 2024",
-          date: "23-26 Marzo, 2024",
-          location: "Boston, MA",
-          image: "/images4.png?height=200&width=350",
-          description: "Festival de juegos para todos los públicos con paneles, torneos y zona de exposición.",
-        },
-        {
-          id: 5,
-          title: "BlizzCon 2024",
-          date: "1-2 Noviembre, 2024",
-          location: "Anaheim, CA",
-          image: "/images5.jpg?height=200&width=350",
-          description: "La convención anual de Blizzard Entertainment con anuncios de sus franquicias más populares.",
-        },
-        {
-          id: 6,
-          title: "Game Awards 2024",
-          date: "12 Diciembre, 2024",
-          location: "Los Angeles, CA",
-          image: "/images6.jpg?height=200&width=350",
-          description: "La ceremonia anual de premios que celebra lo mejor de la industria de los videojuegos.",
-        },
-        {
-          id: 7,
-          title: "Indie Game Festival",
-          date: "18-20 Julio, 2024",
-          location: "San Francisco, CA",
-          image: "/images7.jpg?height=200&width=350",
-          description: "Celebración de los juegos independientes con premios, charlas y oportunidades de networking.",
-        },
-        {
-          id: 8,
-          title: "GameDev Conference",
-          date: "4-8 Marzo, 2024",
-          location: "San Francisco, CA",
-          image: "/images8.png?height=200&width=350",
-          description: "La conferencia más importante para desarrolladores de videojuegos con talleres y charlas.",
-        },
-      ]
-
-      setEvents(allEvents)
-    }
-
-    loadFavorites()
-    loadRegisteredEvents()
-
-    window.addEventListener("favoritesChanged", loadFavorites)
-    window.addEventListener("storage", (e) => {
-      if (e.key === "registeredEvents") {
-        loadRegisteredEvents()
-      }
-    })
-
-    return () => {
-      window.removeEventListener("favoritesChanged", loadFavorites)
-      window.removeEventListener("storage", loadRegisteredEvents)
-    }
-  }, [])
-
-  const toggleEventRegistration = (eventId) => {
-    setRegisteredEvents((prevRegisteredEvents) => {
-      let newRegisteredEvents
-      if (prevRegisteredEvents.includes(eventId)) {
-        newRegisteredEvents = prevRegisteredEvents.filter((id) => id !== eventId)
-      } else {
-        newRegisteredEvents = [...prevRegisteredEvents, eventId]
-      }
-
-      localStorage.setItem("registeredEvents", JSON.stringify(newRegisteredEvents))
-      window.dispatchEvent(new Event("storage"))
-
-      return newRegisteredEvents
-    })
-  }
+    dispatch(loadFavorites())
+    dispatch(loadRegisteredEvents())
+  }, [dispatch])
 
   const userEvents = events.filter((event) => registeredEvents.includes(event.id))
 
@@ -134,14 +30,13 @@ const ProfilePage = () => {
         {/* Tabs Navigation */}
         <div className="max-w-7xl mx-auto mb-8">
           <div className="flex border-b border-gray-200">
-            
             <button
               className={`py-2 px-4 font-medium text-sm flex-1 text-center ${
                 activeTab === "events"
                   ? "border-b-2 border-blue-500 text-blue-600"
                   : "text-purple-300 hover:text-purple-600"
               }`}
-              onClick={() => setActiveTab("events")}
+              onClick={() => dispatch(setActiveTab("events"))}
             >
               Mis Eventos
             </button>
@@ -151,7 +46,7 @@ const ProfilePage = () => {
                   ? "border-b-2 border-blue-500 text-blue-600"
                   : "text-purple-300 hover:text-purple-600"
               }`}
-              onClick={() => setActiveTab("favorites")}
+              onClick={() => dispatch(setActiveTab("favorites"))}
             >
               Mis Juegos Favoritos
             </button>
@@ -201,7 +96,6 @@ const ProfilePage = () => {
                       image={event.image}
                       description={event.description}
                       isRegistered={true}
-                      onToggleRegistration={toggleEventRegistration}
                     />
                   ))}
                 </div>
