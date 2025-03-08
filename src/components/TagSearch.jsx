@@ -13,7 +13,6 @@ const TagSearch = ({ onTagSelect, selectedTags }) => {
 
   const { availableTags, loading } = useSelector((state) => state.filters)
 
-  // Manejar clics fuera del dropdown para cerrarlo
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -27,14 +26,14 @@ const TagSearch = ({ onTagSelect, selectedTags }) => {
     }
   }, [])
 
-  // Buscar tags cuando cambia la consulta
+ 
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setShowDropdown(false)
       return
     }
 
-    // Limpiar el timeout anterior si existe
+ 
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
@@ -52,7 +51,7 @@ const TagSearch = ({ onTagSelect, selectedTags }) => {
     }
   }, [searchQuery, dispatch])
 
-  // Actualizar el dropdown cuando cambian los tags disponibles
+
   useEffect(() => {
     if (availableTags && availableTags.length > 0) {
       setShowDropdown(true)
@@ -69,7 +68,6 @@ const TagSearch = ({ onTagSelect, selectedTags }) => {
     setShowDropdown(false)
   }
 
-  // Filtrar tags que ya están seleccionados
   const filteredTags = availableTags.filter((tag) => !selectedTags.some((selectedTag) => selectedTag.id === tag.id))
 
   return (

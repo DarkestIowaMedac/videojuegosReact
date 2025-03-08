@@ -47,10 +47,8 @@ const AllGamesPage = () => {
   useEffect(() => {
     const initialize = async () => {
       try {
-        // Configuración básica
         localStorage.setItem("search", "games")
 
-        // Cargar filtros directamente desde localStorage para asegurar que tenemos los datos correctos
         const savedFilters = JSON.parse(localStorage.getItem("filters")) || {}
         console.log("Filtros cargados directamente desde localStorage:", savedFilters)
 
@@ -81,19 +79,17 @@ const AllGamesPage = () => {
     if (!initialFetchDone.current) {
       initialize()
     }
-  }, []) // Dependencias vacías intencionalmente para que solo se ejecute una vez
+  }, []) 
 
-  // Efecto para manejar cambios en filtros o página - solo se ejecuta después de la inicialización
+  
   useEffect(() => {
-    // Solo ejecutar este efecto si ya se ha hecho la petición inicial
-    // Y si hay cambios en los filtros o la página (no durante la carga inicial)
+  
     if (initialFetchDone.current) {
       dispatch(saveFiltersToLocalStorage())
       dispatch(fetchGamesAsync({ page: currentPage }))
     }
   }, [dispatch, currentPage, filters])
 
-  // Efecto para manejar cambios en la query de la URL
   useEffect(() => {
     if (initialFetchDone.current && query) {
       dispatch(setSearch(query))
