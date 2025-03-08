@@ -6,12 +6,12 @@ import GameCard from "../components/GameCard"
 import Footer from "../components/Footer"
 import ArrowButton from "../components/ArrowButton"
 import { fetchAllGames, fetchGenres } from "../services/api.js"
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom"
 import TagSearch from "../components/TagSearch"
 import SelectedTags from "../components/SelectedTags"
 
 const AllGamesPage = () => {
-  const { query } = useParams();
+  const { query } = useParams()
   const [allGames, setAllGames] = useState([])
   const [allGenres, setAllGenres] = useState([])
   const [loading, setLoading] = useState(true)
@@ -19,52 +19,51 @@ const AllGamesPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
-  const savedFilters = JSON.parse(localStorage.getItem('filters')) || {};
-  localStorage.setItem('search', 'games');
-  
-  const [selectedTags, setSelectedTags] = useState(savedFilters.tags ? 
-    (Array.isArray(savedFilters.tags) ? savedFilters.tags : [savedFilters.tags]) : 
-    []);
-    
+  const savedFilters = JSON.parse(localStorage.getItem("filters")) || {}
+  localStorage.setItem("search", "games")
+
+  const [selectedTags, setSelectedTags] = useState(
+    savedFilters.tags ? (Array.isArray(savedFilters.tags) ? savedFilters.tags : [savedFilters.tags]) : [],
+  )
+
   const [filters, setFilters] = useState({
     search: query || "",
     tags: savedFilters.tags || [],
     genre: savedFilters.genre || "",
     metacritic: savedFilters.metacritic || 0,
     year: savedFilters.year || "",
+    sort: savedFilters.sort || "alphabetical",
   })
-  
+
   const handleTagSelect = (tag) => {
-    // Verificar si el tag ya está seleccionado
-    if (!selectedTags.some(t => t.id === tag.id)) {
-      const newSelectedTags = [...selectedTags, tag];
-      setSelectedTags(newSelectedTags);
-      
-      // Actualizar los filtros con los nuevos tags
-      setFilters(prev => {
-        const newFilters = { ...prev, tags: newSelectedTags };
-        localStorage.setItem('filters', JSON.stringify(newFilters));
-        return newFilters;
-      });
+
+    if (!selectedTags.some((t) => t.id === tag.id)) {
+      const newSelectedTags = [...selectedTags, tag]
+      setSelectedTags(newSelectedTags)
+
+      setFilters((prev) => {
+        const newFilters = { ...prev, tags: newSelectedTags }
+        localStorage.setItem("filters", JSON.stringify(newFilters))
+        return newFilters
+      })
     }
-  };
-  
+  }
+
   const handleRemoveTag = (tagId) => {
-    const newSelectedTags = selectedTags.filter(tag => tag.id !== tagId);
-    setSelectedTags(newSelectedTags);
-    
-    // Actualizar los filtros sin el tag eliminado
-    setFilters(prev => {
-      const newFilters = { ...prev, tags: newSelectedTags };
-      localStorage.setItem('filters', JSON.stringify(newFilters));
-      return newFilters;
-    });
-  };
+    const newSelectedTags = selectedTags.filter((tag) => tag.id !== tagId)
+    setSelectedTags(newSelectedTags)
+
+    setFilters((prev) => {
+      const newFilters = { ...prev, tags: newSelectedTags }
+      localStorage.setItem("filters", JSON.stringify(newFilters))
+      return newFilters
+    })
+  }
 
   const loadAllGames = async () => {
     setLoading(true)
     try {
-      const data = await fetchAllGames(currentPage,filters)
+      const data = await fetchAllGames(currentPage, filters)
       setAllGames(data.results)
       setTotalPages(Math.ceil(data.count / 40))
     } catch (error) {
@@ -81,7 +80,6 @@ const AllGamesPage = () => {
       console.log("los datos")
       console.log(data)
       setAllGenres(data)
-      
     } catch (error) {
       console.error("Error loading games:", error)
     } finally {
@@ -90,32 +88,32 @@ const AllGamesPage = () => {
   }
 
   useEffect(() => {
-    loadGenres() 
-  }, []) 
+    loadGenres()
+  }, [])
 
   useEffect(() => {
     //console.log(filters)
-    console.log('La query es'+query)
-    loadAllGames(currentPage, filters) 
-  }, [currentPage, filters, query]) 
+    console.log("La query es" + query)
+    loadAllGames(currentPage, filters)
+  }, [currentPage, filters, query])
 
   // useEffect(() => {
   //   if (query) {
-  //     setFilters((prev) => ({ ...prev, search: query })); 
+  //     setFilters((prev) => ({ ...prev, search: query }));
   //   }
-  // }, [query]); 
+  // }, [query]);
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFilters((prev) => {
-      const newFilters = { ...prev, [name]: value }; 
-      localStorage.setItem('filters', JSON.stringify(newFilters));
-      console.log("losfiltros") 
+      const newFilters = { ...prev, [name]: value }
+      localStorage.setItem("filters", JSON.stringify(newFilters))
+      console.log("losfiltros")
       console.log(newFilters)
       console.log(filters)
-      return newFilters; 
-    });
-  };
+      return newFilters
+    })
+  }
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -131,39 +129,60 @@ const AllGamesPage = () => {
     }
   }
 
-  const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 
-    2013, 2012, 2011, 2010, '2000s', '1990s', '1980s', '1970s']
+  const years = [
+    2025,
+    2024,
+    2023,
+    2022,
+    2021,
+    2020,
+    2019,
+    2018,
+    2017,
+    2016,
+    2015,
+    2014,
+    2013,
+    2012,
+    2011,
+    2010,
+    "2000s",
+    "1990s",
+    "1980s",
+    "1970s",
+  ]
 
   return (
     <div>
       <Header />
       <main className="p-4">
         <h2 className="mt-8 text-3xl font-bold text-center mb-6">Todos los Juegos</h2>
-        
+
         <div className="mb-6 flex flex-wrap gap-4 justify-center">
-        <div className="w-full max-w-xs mx-auto">
-          <TagSearch 
-            onTagSelect={handleTagSelect} 
-            selectedTags={selectedTags}
-          />
-          <SelectedTags 
-            tags={selectedTags} 
-            onRemoveTag={handleRemoveTag}
-          />
-        </div>
-          <select name="genre" value={filters.genre} onChange={handleFilterChange} className="h-10 p-2 border rounded">
+          <div className="w-full max-w-xs mx-auto">
+            <TagSearch onTagSelect={handleTagSelect} selectedTags={selectedTags} />
+            <SelectedTags tags={selectedTags} onRemoveTag={handleRemoveTag} />
+          </div>
+          <select name="genre" value={filters.genre} onChange={handleFilterChange} className="h-10 text-black p-2 border rounded">
             <option value="">Todos los géneros</option>
             {loadinggenres ? (
-            <option disabled>Cargando géneros...</option> // Muestra este mensaje mientras se cargan los géneros
+              <option disabled>Cargando géneros...</option> // Muestra este mensaje mientras se cargan los géneros
             ) : (
-            allGenres.map((genre) => (
-              <option key={genre.name} value={genre.name}> {/* Asegúrate de usar genre.id como valor */}
-                {genre.name} {/* Muestra el nombre del género */}
-              </option>
-            ))
+              allGenres.map((genre) => (
+                <option className="h-10 text-black" key={genre.name} value={genre.name}>
+                  {" "}
+                  {/* Asegúrate de usar genre.id como valor */}
+                  {genre.name} {/* Muestra el nombre del género */}
+                </option>
+              ))
             )}
           </select>
-          <select name="metacritic" value={filters.metacritic} onChange={handleFilterChange} className=" h-10 p-2 border rounded">
+          <select
+            name="metacritic"
+            value={filters.metacritic}
+            onChange={handleFilterChange}
+            className=" h-10 p-2 border rounded"
+          >
             <option value="0">Todas las puntuaciones</option>
             <option value="81">81-100</option>
             <option value="61">61-80</option>
@@ -178,6 +197,11 @@ const AllGamesPage = () => {
                 {year}
               </option>
             ))}
+          </select>
+          <select name="sort" value={filters.sort} onChange={handleFilterChange} className="h-10 p-2 border rounded">
+            <option value="alphabetical">Ordenar por: Alfabético</option>
+            <option value="release_date">Fecha de lanzamiento</option>
+            <option value="rating">Valoración</option>
           </select>
         </div>
 

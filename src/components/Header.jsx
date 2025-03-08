@@ -10,16 +10,20 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate();
   const handleGamesClick = () => {
-    localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/games"); // Redirige a la página de juegos
+    localStorage.removeItem('filters'); // O localStorage.removeItem('filters') para eliminar un item específico
+    navigate("/games"); 
   };
   const handlePublishersClick = () => {
-    localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/publishers"); // Redirige a la página de juegos
+    localStorage.removeItem('filters'); // O localStorage.removeItem('filters') para eliminar un item específico
+    navigate("/publishers"); 
   };
   const handleEventsClick = () => {
-    //localStorage.clear(); // O localStorage.removeItem('filters') para eliminar un item específico
-    navigate("/events"); // Redirige a la página de juegos
+    localStorage.removeItem('filters') // O localStorage.removeItem('filters') para eliminar un item específico
+    navigate("/events"); 
+  };
+  const handleProfileClick = () => {
+    localStorage.removeItem('filters') // O localStorage.removeItem('filters') para eliminar un item específico
+    navigate("/Profile"); 
   };
   // const handleSearch = () => {
   //   //console.log('Buscar:', query);
@@ -44,6 +48,9 @@ const Header = () => {
             </a>
             <a href="" onClick={handleEventsClick} className="text-white hover:text-gray-300">
               Eventos
+            </a>
+            <a href="" onClick={handleProfileClick} className="text-white hover:text-gray-300">
+              Profile
             </a>
           </nav>
           <button onClick={() => setShowMenu(!showMenu)} className="sm:hidden text-white text-2xl">

@@ -8,7 +8,7 @@ const SelectedTags = ({ tags, onRemoveTag }) => {
         {tags.map(tag => (
           <div 
             key={tag.id} 
-            className="flex items-center bg-gray-200 rounded-full px-3 py-1 text-sm"
+            className="flex oscuro items-center bg-gray-200 rounded-full px-3 py-1 text-sm"
           >
             <span>{tag.name}</span>
             <button 

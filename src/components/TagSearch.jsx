@@ -98,7 +98,7 @@ const TagSearch = ({ onTagSelect, selectedTags }) => {
           {tags.map(tag => (
             <div
               key={tag.id}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
+              className="p-2 oscuroletrasoscuras hover:bg-gray-100 cursor-pointer"
               onClick={() => handleTagClick(tag)}
             >
               {tag.name} ({tag.games_count})

@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import EventCard from "../components/EventCard"
 
 const EventsPage = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([
@@ -72,13 +73,36 @@ const EventsPage = () => {
     },
   ])
 
+  const [registeredEvents, setRegisteredEvents] = useState([])
+
+  useEffect(() => {
+    const storedEvents = localStorage.getItem("registeredEvents")
+    if (storedEvents) {
+      setRegisteredEvents(JSON.parse(storedEvents))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("registeredEvents", JSON.stringify(registeredEvents))
+  }, [registeredEvents])
+
+  const toggleEventRegistration = (eventId) => {
+    setRegisteredEvents((prevRegisteredEvents) => {
+      if (prevRegisteredEvents.includes(eventId)) {
+        return prevRegisteredEvents.filter((id) => id !== eventId)
+      } else {
+        return [...prevRegisteredEvents, eventId]
+      }
+    })
+  }
+
   return (
     <div>
       <Header />
       <main className="p-4">
         <section className="my-8">
-          <h2 className="text-3xl font-bold text-center mb-6">Eventos de Videojuegos</h2>
-          <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-3xl text-white font-bold text-center mb-6">Eventos de Videojuegos</h2>
+          <p className="text-center oscuroletras mb-8 max-w-2xl mx-auto">
             Descubre los eventos más importantes de la industria de los videojuegos. Mantente al día con las últimas
             novedades, anuncios y oportunidades para conocer a desarrolladores y otros jugadores.
           </p>
@@ -94,13 +118,15 @@ const EventsPage = () => {
                   location={event.location}
                   image={event.image}
                   description={event.description}
+                  isRegistered={registeredEvents.includes(event.id)}
+                  onToggleRegistration={toggleEventRegistration}
                 />
               ))}
             </div>
           </div>
         </section>
 
-        <section className="my-16 bg-gray-100 py-12 rounded-lg">
+        <section className="my-16 bg-gray-800 py-12 rounded-lg">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h3 className="text-2xl font-bold mb-4">¿Organizas un evento de gaming?</h3>
             <p className="mb-6">
@@ -114,79 +140,6 @@ const EventsPage = () => {
         </section>
       </main>
       <Footer />
-    </div>
-  )
-}
-
-const EventCard = ({ id, title, date, location, image, description }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="h-48 overflow-hidden relative group">
-        <img
-          src={image || "/placeholder.svg"}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <button
-          className="absolute top-2 right-2 bg-white bg-opacity-80 p-1.5 rounded-full hover:bg-opacity-100 transition-all duration-200"
-          aria-label="Añadir a favoritos"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-5 w-5 text-yellow-500"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="p-4">
-        <h3 className="text-xl font-bold mb-2 truncate">{title}</h3>
-        <div className="flex items-center text-gray-600 mb-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 mr-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          <span>{date}</span>
-        </div>
-        <div className="flex items-center text-gray-600 mb-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 mr-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-            />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>{location}</span>
-        </div>
-        <p className="text-gray-700 mb-4 line-clamp-3">{description}</p>
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
-          Apuntarse
-        </button>
-      </div>
     </div>
   )
 }

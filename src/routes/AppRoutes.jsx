@@ -6,6 +6,8 @@ import NotFoundPage from '../pages/NotFoundPage';
 import AllPublishersPage from '../pages/AllPublishersPage';
 import PublisherDetailPage from '../pages/PublisherDetailPage';
 import EventsPage from '../pages/EventsPage';
+import ProfilePage from '../pages/ProfilePage';
+import EventsjoinPage from '../pages/EventsjoinPage';
 const AppRoutes = () => {
     return (
       
@@ -24,6 +26,10 @@ const AppRoutes = () => {
           <Route path="/publisher/:id" element={<PublisherDetailPage />} />
 
           <Route path="/events" element={<EventsPage />} />
+
+          <Route path="/Profile" element={<ProfilePage />} />
+
+          <Route path="/event-join" element={<EventsjoinPage />} />
 
           <Route path="/" element={<HomePage />} />
 

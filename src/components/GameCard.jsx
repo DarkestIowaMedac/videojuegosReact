@@ -1,18 +1,54 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 const GameCard = ({ id, title, image, description }) => {
   const navigate = useNavigate()
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  useEffect(() => {
+    const checkFavorite = () => {
+      const favs = JSON.parse(localStorage.getItem("favs")) || []
+      setIsFavorite(favs.some((fav) => fav.id === id))
+    }
+
+    checkFavorite()
+
+    window.addEventListener("favoritesChanged", checkFavorite)
+
+    return () => {
+      window.removeEventListener("favoritesChanged", checkFavorite)
+    }
+  }, [id])
 
   const handleDetailsClick = () => {
     navigate(`/game/${id}`)
   }
 
+  const toggleFavorite = (e) => {
+    e.stopPropagation() // Prevenir que se active el click del card
+
+    const favs = JSON.parse(localStorage.getItem("favs")) || []
+
+    if (isFavorite) {
+      const updatedFavs = favs.filter((fav) => fav.id !== id)
+      localStorage.setItem("favs", JSON.stringify(updatedFavs))
+    } else {
+      const updatedFavs = [...favs, { id, title: title || "", image }]
+      localStorage.setItem("favs", JSON.stringify(updatedFavs))
+    }
+
+    setIsFavorite(!isFavorite)
+
+    window.dispatchEvent(new Event("favoritesChanged"))
+  }
+
   return (
-    <div className="w-full h-[350px] rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105 relative">
-      {/* Favorites button with inline SVG */}
+    <div className="oscuro w-full h-[350px] rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105 relative">
+     
       <button
+        onClick={toggleFavorite}
         className="absolute top-2 right-2 bg-white/80 hover:bg-white p-1.5 rounded-full shadow-md z-10 transition-colors"
         aria-label="Añadir a favoritos"
       >
@@ -21,7 +57,7 @@ const GameCard = ({ id, title, image, description }) => {
           width="20"
           height="20"
           viewBox="0 0 24 24"
-          fill="none"
+          fill={isFavorite ? "currentColor" : "none"}
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -40,7 +76,7 @@ const GameCard = ({ id, title, image, description }) => {
       <div className="p-4 h-[134px] flex flex-col justify-between">
         {" "}
         {/* Altura fija para el contenido */}
-        <h3 className="font-bold text-xl line-clamp-2 mb-2">{title}</h3>
+        <h3 className="font-bold text-xl line-clamp-2 mb-2 ">{title}</h3>
         <button
           onClick={handleDetailsClick}
           className="bg-blue-500 text-white font-bold py-1 px-4 rounded hover:bg-blue-700 transition duration-300 mt-auto"
@@ -53,3 +89,4 @@ const GameCard = ({ id, title, image, description }) => {
 }
 
 export default GameCard
+

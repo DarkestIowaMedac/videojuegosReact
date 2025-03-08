@@ -136,6 +136,13 @@ export const fetchAllGames = async (page = 1, filters) => {
   
   queryParams.append('tags', tagsParam);
 }
+const sortMapping = {
+  alphabetical: "name",
+  release_date: "-released",
+  rating: "-metacritic",
+}
+queryParams.append("ordering", sortMapping[filters.sort] || "name")
+
  console.log(`${BASE_URL}/games?key=${API_KEY}&page=${page}&${queryParams.toString()}`);
  const response = await fetch(
   `${BASE_URL}/games?key=${API_KEY}&page=${page}&${queryParams.toString()}`,

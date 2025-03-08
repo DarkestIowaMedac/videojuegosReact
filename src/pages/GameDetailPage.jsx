@@ -108,21 +108,21 @@ const GameDetailPage = () => {
                   </div>
                 )}
               </div>
-              <p className="text-gray-700 text-lg mb-6">{game.description_raw}</p>
+              <p className="text-gray-700 oscuroletrasoscuras text-lg mb-6">{game.description_raw}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Plataformas</h2>
-                  <ul className="list-disc list-inside">
+                  <h2 className="text-xl oscuroletrasoscuras font-semibold mb-2">Plataformas</h2>
+                  <ul className="list-disc oscuroletrasoscuras list-inside">
                     {game.platforms && game.platforms.map((p) => <li key={p.platform.name}>{p.platform.name}</li>)}
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Géneros</h2>
-                  <ul className="list-disc list-inside">
+                  <h2 className="text-xl oscuroletrasoscuras font-semibold mb-2">Géneros</h2>
+                  <ul className="list-disc oscuroletrasoscuras list-inside">
                     {game.genres &&
                       game.genres.map((g) => (
-                        <li key={g.name} className="hover:text-blue-600">
-                          <Link to="/games" onClick={() => handleGenreClick(g.name)} className="hover:underline">
+                        <li key={g.name} className="hover:text-purple-500">
+                          <Link to="/games" onClick={() => handleGenreClick(g.name)} className="hover:underline hover:text-purple-500">
                             {g.name}
                           </Link>
                         </li>
@@ -130,17 +130,17 @@ const GameDetailPage = () => {
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Desarrolladores</h2>
-                  <ul className="list-disc list-inside">
+                  <h2 className="text-xl oscuroletrasoscuras font-semibold mb-2">Desarrolladores</h2>
+                  <ul className="list-disc oscuroletrasoscuras list-inside">
                     {game.developers && game.developers.map((d) => <li key={d.name}>{d.name}</li>)}
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Publicadores</h2>
-                  <ul className="list-disc list-inside">
+                  <h2 className="text-xl oscuroletrasoscuras font-semibold mb-2">Publicadores</h2>
+                  <ul className="list-disc oscuroletrasoscuras list-inside">
                     {game.publishers && game.publishers.map((p) => 
-                    <li key={p.name} className="hover:text-blue-600">
-                    <Link to={`/publishers/${p.id}`} className="hover:underline">
+                    <li key={p.name} className="hover:text-purple-500">
+                    <Link to={`/publishers/${p.id}`} className="hover:underline hover:text-purple-500">
                       {p.name}
                     </Link>
                     </li>)}
