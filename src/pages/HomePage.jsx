@@ -11,7 +11,7 @@ const HomePage = () => {
   const [featuredGames, setFeaturedGames] = useState([]);
   const [loadingb, setLoadingb] = useState(true);
   const [loadingf, setLoadingf] = useState(true);
-  localStorage.clear()
+  localStorage.removeItem('search');
   localStorage.setItem('search', 'games');
   useEffect(() => {
     const loadGames = async () => {

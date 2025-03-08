@@ -17,11 +17,8 @@ TAREAS POR HACER:
 -Estilos Claroscuros Mejores
 -Mejorar estilos generales 
 ----
--botón fav en juegos
--Cambiar los clears para que solo limpien una variable
 -Favoritos y eventos guardar en localStorage y que se quede dado como favorito en futuras recargas.
 -Página de perfil
--permitir registro de usuarios
 -Mostrar en perfil los favs y eventos
 (CUIDADO CON LA LIMPIEZA DE LOCALSTORAGE ACTUAL, LIMPIAR SOLO LA VARIABLE NECESARIA)
 -Funcional el QR
